@@ -1,0 +1,48 @@
+/** 
+* Design by Natsu
+*/
+
+/* Body */
+.fuyu-body {
+    margin-top: 20px;
+}
+
+/* Navbar */
+.logo img {
+    width: 200px;
+}
+
+.bg-fuyu {
+    background-color: #ab2328;
+    box-shadow: 0 -4px 10px #ab2328;
+}
+
+.nav-link {
+    color: #dda7a9!important;
+    font-weight: 700!important;
+    font-size: 1.1rem;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #fff!important;
+    transition: all .15s ease-in-out;
+}
+
+.navbar-nav .active {
+    color: #fff!important;
+}
+
+.navbar-nav .active{
+    border-bottom: .25rem solid #fff;
+    text-decoration: none;
+}
+
+/* Container */
+.fuyu-comments {
+    border-left: hidden!important;
+}
+
+.th {
+    position: relative;
+    background-image: none !important;
+}
