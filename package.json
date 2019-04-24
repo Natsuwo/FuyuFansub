@@ -18,8 +18,14 @@
   },
   "homepage": "https://github.com/Natsuwo/FuyuFansub#readme",
   "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
     "ejs": "^2.6.1",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "lowdb": "^1.0.0",
+    "md5": "^2.2.1",
+    "mongodb": "^3.2.3",
+    "mongoose": "^5.5.3"
   },
   "devDependencies": {
     "nodemon": "^1.18.11"

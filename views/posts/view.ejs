@@ -1,0 +1,58 @@
+<%- include('../header'); -%>
+<%- include('../navbar'); -%>
+<div class="container">
+      <div class="panel panel-danger">
+            <div class="panel-heading">
+               <h3 class="panel-title">
+                  <%= post.post_title%>
+               </h3>
+            </div>
+            <div class="panel-body">
+               <div class="row">
+                  <div class="col-md-1">Category:</div>
+                  <div class="col-md-5">
+                     <a href="#"><%= post.category%></a>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-md-1">Submitter:</div>
+                  <div class="col-md-5">
+                  <a class="text-default" href="#" data-toggle="tooltip" title="User">Natsu</a></div>            
+               </div>        
+               <div class="row">
+                  <div class="col-md-1">File size:</div>
+                  <div class="col-md-5"><%= post.file_size%></div>
+               </div>
+               <div class="row">                
+                     <div class="col-md-1">Date:</div>
+                     <div class="col-md-5"><%= post.date%></div>
+                  </div>
+            
+               <div class="row">
+                  <div class="col-md-1">Completed:</div>
+                  <div class="col-md-5"><%= post.count_download%></div>
+               </div>
+               <div class="row">
+                  <div class="col-md-offset-6 col-md-1">Info hash:</div>
+                  <div class="col-md-5"><kbd><%= post.id%></kbd></div>
+               </div>
+            </div><!--/.panel-body -->
+         
+            <div class="panel-footer clearfix">
+         <a href="/download/<%= post.link_hash%>"><i class="fa fa-download fa-fw"></i>Download Link</a>
+            </div>
+         </div>
+
+         <div class="panel panel-default">
+               <div class="panel-heading">
+                  <h3 class="panel-title">File list</h3>
+               </div>
+            
+               <div class="torrent-file-list panel-body">
+                  <%= post.post_title %>
+               </div>
+            </div>
+</div>
+
+
+<%- include('../footer'); -%>

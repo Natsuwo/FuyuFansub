@@ -1,0 +1,36 @@
+<%- include('../header'); -%>
+<%- include('../navbar'); -%>
+<div class="container">
+    <h1>Upload new Post</h1>
+
+    <form action="/upload" method="POST">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                <label class="control-label" for="post_title">Post Name</label>
+                <input class="form-control" id="post_title" name="post_title" placeholder="Post name" title="" type="text" value="">
+            </div>
+                </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                <label class="control-label" for="category">Category</label>
+                <select class="form-control" id="category" name="category" title="">
+                    <option value="AnimeSub">Anime Sub</option>
+                </select>
+            </div>
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                    <label class="control-label" for="link_download">Link Download</label>
+                    <input class="form-control" id="link_download" name="link_download" placeholder="Link Download" title="" type="text" value="">
+                    </div>
+                </div>
+        </div>
+        <button class="btn btn-primary">Upload</button>
+    </form>
+</div>
+
+
+<%- include('../footer'); -%>

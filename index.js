@@ -1,7 +1,14 @@
-var express = require('express');
-var app = express();
-var port = 3000;
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+const port = 3000;
 
+const postRoute = require('./routes/post.route');
+
+// const mongoose = require('mongoose');
+// mongoose.connect('mongodb://localhost/fuyu-db');
+
+// const Posts = require('./models/user.model');
 // config EJS
 app.set('view engine', 'ejs');
 app.set('views', './views');
@@ -9,34 +16,24 @@ app.set('views', './views');
 
 // App Config 
 app.use(express.static('public'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
+
+app.use('/', postRoute);
 // End App Config
 
-users = [
- { id: 1, name: 'Natsu' },
- { id: 2, name: 'Henxuj15' }
-];
 
-app.get('/', (req, res) => {
-    res.render('index');
-});
+// app.get('/', (req, res) => {
+//     const q = req.query.q;
+//     const matchedPosts = db.get('posts').value().filter(function(post) {
+//         return post.post_title.indexOf(q) !== -1;
+//     });
 
-app.get('/Abouts', (req, res) => {
-    res.render('users/index', {
-        users: users
-    });
-});
-
-app.get('/Abouts/search', (req, res) => {
-    const q = req.query.q;
-    const matchedUsers = users.filter(function(user) {
-        return user.name.indexOf(q) !== -1;
-    });
-
-    res.render('users/index', {
-        users: matchedUsers
-    });
-});
+//     res.render('index', {
+//         posts: matchedPosts
+//     });
+// });
 
 app.listen(port, () => {
     console.log('Server is running on port ' + port);
