@@ -1,9 +1,14 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const port = 3000;
 
 const postRoute = require('./routes/post.route');
+const episodeRoute = require('./routes/episode.route');
+const userRoute = require('./routes/user.route');
+const authRoute = require('./routes/auth.route');
 
 // const mongoose = require('mongoose');
 // mongoose.connect('mongodb://localhost/fuyu-db');
@@ -18,9 +23,12 @@ app.set('views', './views');
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(cookieParser(process.env.SESSION_SECRET));
 
 app.use('/', postRoute);
+app.use('/', episodeRoute);
+app.use('/', userRoute);
+app.use('/', authRoute);
 // End App Config
 
 

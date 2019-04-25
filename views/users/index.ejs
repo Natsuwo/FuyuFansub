@@ -1,8 +1,6 @@
 <%- include('../header'); -%>
 <%- include('../navbar'); -%>
-<ul>
-    <% for(let user of users ) { %>
-    <li><%= user.name %></li>
+    <% if (user) {%>
+    <%= user.name %>
     <% } %>
-</ul>
 <%- include('../footer'); -%>

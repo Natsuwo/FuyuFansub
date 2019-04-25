@@ -1,9 +1,21 @@
 <%- include('../header'); -%>
 <%- include('../navbar'); -%>
 <div class="container">
-    <h1>Upload new Post</h1>
-
-    <form action="/upload" method="POST">
+    <h1>Add New</h1>
+    <% if (errors) { %>
+     <% for(let error of errors ) { %>
+    <div class="alert alert-danger"><%= error %></div>
+     <% } %>
+    <% } %>
+    <form method="POST", enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="thumbnail">Thumbnail</label>
+                    <input name="thumbnail" type="file" id="thumbnail" class="form-control-file">
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
@@ -13,22 +25,33 @@
                 </div>
             <div class="col-md-6">
                 <div class="form-group">
-                <label class="control-label" for="category">Category</label>
-                <select class="form-control" id="category" name="category" title="">
-                    <option value="AnimeSub">Anime Sub</option>
-                </select>
+                <label class="control-label" for="tags">Tags</label>
+                <input class="form-control" id="tags" name="tags" placeholder="Tags name" title="" type="text" value="">
+                 </div>
             </div>
-                </div>
         </div>
         <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                    <label class="control-label" for="link_download">Link Download</label>
-                    <input class="form-control" id="link_download" name="link_download" placeholder="Link Download" title="" type="text" value="">
+                    <label class="control-label" for="studios">Studios</label>
+                    <input class="form-control" id="studios" name="studios" placeholder="Studios" title="" type="text" value="">
                     </div>
                 </div>
+                <div class="col-md-6">
+                        <label class="control-label">Torrent flags</label>
+                </div>
         </div>
-        <button class="btn btn-primary">Upload</button>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label" for="description">Description</label>
+                    <div role="tabpanel" class="tab-pane active" id="description-tab" data-markdown-target="#description-markdown-target">
+                        <textarea class="form-control markdown-source" id="description" name="description"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>        
+        <button class="btn btn-primary">Add New</button>
     </form>
 </div>
 
