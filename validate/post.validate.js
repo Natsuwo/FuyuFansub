@@ -1,6 +1,6 @@
 const md5 = require('md5');
 
-module.exports.postUpload = (req, res, next) => {
+module.exports.addPost = (req, res, next) => {
     var today = new Date();
     var day = today.getDate() + "";
     var month = (today.getMonth() + 1) + "";
@@ -26,7 +26,7 @@ module.exports.postUpload = (req, res, next) => {
 
         
     req.body.date = year + "-" + month + "-" + day + " " + hour + ":" + minutes;
-    req.body.id = md5(req.body.post_title);
+    req.body.postId = md5(req.body.post_title);
 
     const errors = [];
 
@@ -35,7 +35,7 @@ module.exports.postUpload = (req, res, next) => {
     }
 
     if (errors.length) {
-        res.render('posts/upload', {
+        res.render('posts/add-new', {
             errors: errors
         });
         return;

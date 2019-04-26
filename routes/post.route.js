@@ -4,6 +4,7 @@ const router = express.Router();
 const controller = require('../controllers/post.controller');
 const validate = require('../validate/post.validate');
 const md5 = require('md5');
+const authMiddleware = require('../middlewares/auth.middleware');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -19,14 +20,24 @@ const upload = multer({ storage: storage });
 
 router.get('/', controller.index);
 
-router.get('/view/:id', controller.view);
+router.get('/view/:postId', controller.view);
 
-router.get('/upload', controller.upload);
+router.get('/add-post', authMiddleware.requireAuth, controller.addPost);
 
-router.post('/upload', 
+router.get('/add-episode', authMiddleware.requireAuth, controller.addEpisode);
+
+router.get('/download/:postId/:epNum', controller.download);
+
+router.get('/logout', controller.logout);
+
+router.post('/add-post', 
     upload.single('thumbnail'), 
-    validate.postUpload, 
-    controller.postUpload
+    validate.addPost, 
+    controller.postAddPost
+);
+
+router.post('/add-episode', 
+    controller.postAddEpisode
 );
 
 module.exports = router;

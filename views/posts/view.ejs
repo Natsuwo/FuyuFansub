@@ -31,11 +31,14 @@
 
    <table class="table table-striped mt-2">
          <tbody>
-           <tr>
-             <th scope="row">1</th>
-             <td>Shingeki no Kyojin Season 3 Part 2</td>
-             <td>DL</td>
-           </tr>
+            <% const episodes = post.episodes; %>
+            <% for(let episode of episodes ) { %>
+            <tr>
+            <th scope="row"><%= episode.epNum%></th>
+            <td><%= episode.fileName%> <b>(<%= episode.fileSize%>)</b></td>
+            <td><a href="/download/<%= post.postId%>/<%= episode.epNum%>">DL</a></td>
+            </tr>
+            <% } %>
          </tbody>
        </table>
 </div>

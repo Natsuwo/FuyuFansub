@@ -1,7 +1,7 @@
 const db = require('../db');
 
 module.exports.profile =  (req, res) => {
-    res.render('users/index', {
+    res.render('users/profile', {
         users: db.get('users').value()
     });
 };

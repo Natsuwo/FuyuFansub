@@ -1,30 +1,36 @@
-<table class="table table-bordered">
-    <thead>
-        <tr>
-        <th style="width:80px;" class="text-center" scope="col">Category</th>
-        <th scope="col">Name</th>
-        <th class="fuyu-comments" title="Comments" style="width:50px;">
-                <a href="#"></a>
-                <i class="fas fa-comments"></i>
-        </th>
-        <th class="text-center" scope="col">Link</th>
-        <th class="text-center" scope="col">Size</th>
-        <th class="text-center" scope="col">Date</th>
-        <th class="text-center" scope="col"><i class="fa fa-check" aria-hidden="true"></i></th>
-        </tr>
-    </thead>
-    <tbody>
-        <% for(let post of posts ) { %>
+<div class="container">
+    <table class="table table-bordered">
+        <thead>
             <tr>
-                <th class="text-center" scope="row"><%= post.category %></th>
-                <td colspan="2"><a href="/view/<%= post.id%>"><%= post.post_title %></a></td>
-                <td class="text-center" style="white-space: nowrap;">
-                    <a href="/download/<%= post.link_hash%>"><i class="fa fa-fw fa-download"></i></a>
-                </td>
-                <td class="text-center"><%= post.file_size %></td>
-                <td class="text-center"><%= post.date %></td>
-                <td class="text-center"><%= post.count_download %></td>
+            <th style="width:80px;" class="text-center" scope="col">Category</th>
+            <th scope="col">Name</th>
+            <th class="fuyu-comments" title="Comments" style="width:50px;">
+                    <a href="#"></a>
+                    <i class="fas fa-comments"></i>
+            </th>
+            <th class="text-center" scope="col">Link</th>
+            <th class="text-center" scope="col">Size</th>
+            <th class="text-center" scope="col">Date</th>
+            <th class="text-center" scope="col"><i class="fa fa-check" aria-hidden="true"></i></th>
             </tr>
-        <% } %>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            <% for (let post of posts ) { %>
+            <% episodes = post.episodes %>
+                <% for (let episode of episodes) {%>
+                <tr>
+                    <th class="text-center" scope="row"><%= episode.category %></th>
+                    <td colspan="2"><a href="/view/<%= post.postId%>"><%= episode.fileName %></a></td>
+                    <td class="text-center" style="white-space: nowrap;">
+                        <a href="/download/<%= post.postId%>/<%= episode.epNum%>"><i class="fa fa-fw fa-download"></i></a>
+                    </td>
+                    <td class="text-center"><%= episode.fileSize %></td>
+                    <% date = moment(episode.date).format('YYYY-MM-DD HH:mm:ss') %>
+                    <td class="text-center"><%= date %></td>
+                    <td class="text-center"><%= episode.count %></td>
+                </tr>
+                <% } %>
+            <% } %>
+        </tbody>
+    </table>
+</div>

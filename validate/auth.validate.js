@@ -3,12 +3,16 @@ const db = require('../db');
 
 module.exports.postLogin = (req, res, next) => {  
     const errors = [];
-    const {email, password}  = req.body;
-    const user = db.get('users').find({ email: email }).value();
+    const email = req.body.email.toLowerCase();
+    const password = req.body.password;
+    var user = db.get('users').find({ email: email }).value();
  
     if (!user) {
-      errors.push('User desn\'t exist.');
-    }
+      user = db.get('users').find({ username: email }).value();
+      if(!user) {
+        errors.push('User or Email desn\'t exist.');
+      }
+    }  
 
     const hashedPassword = md5(password);
     if (

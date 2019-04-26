@@ -1,6 +1,5 @@
 const db = require('../db');
 
-
 module.exports.requireAuth = (req, res, next) => {
     if (!req.signedCookies.userId) {
         res.redirect('/login');
@@ -15,7 +14,6 @@ module.exports.requireAuth = (req, res, next) => {
        res.redirect('/login');
        return; 
     }
-
     res.locals.user = user;
 
     next();

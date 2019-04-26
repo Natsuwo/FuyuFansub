@@ -1,10 +1,10 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-fuyu">
+<nav class="navbar navbar-expand-lg navbar-light bg-fuyu mb-2">
     <div class="container">
         <a href="/" class="logo pr-2"><img src="/img/logo.png" alt="logo"></a>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-item nav-link" href="/upload">Upload</a>
-            <a class="nav-item nav-link active" href="/Abouts">Abouts</a>
+            <a class="nav-item nav-link" href="/list-project">List Project</a>
+            <a class="nav-item nav-link active" href="#">About Us</a>
           </div>
         </div>
         <form class="form-inline">
@@ -17,13 +17,25 @@
         </form>
         <ul class="nav navbar-nav navbar-right">
             <li class="nav-item dropdown">
+                    <% if (loginStatus) { %>
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <%= user.name%>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/add-post">Add Post</a>
+                        <a class="dropdown-item" href="/add-episode">Add Episode</a>
+                        <a class="dropdown-item" href="/profile">Profile</a>
+                        <a class="dropdown-item" href="/logout">Logout</a>
+                    </div>
+                    <% } else{ %>
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Guest
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/login">Login</a>
+                        <a class="dropdown-item" href="/login">Login</a>  
                         <a class="dropdown-item" href="#">Register</a>
                     </div>
+                    <% } %>
             </li>
         </ul>
     </div>

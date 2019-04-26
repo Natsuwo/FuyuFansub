@@ -8,6 +8,7 @@
      <% } %>
     <% } %>
     <form method="POST", enctype="multipart/form-data">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
