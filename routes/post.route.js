@@ -20,6 +20,8 @@ const upload = multer({ storage: storage });
 
 router.get('/', controller.index);
 
+router.get('/list-project', controller.project);
+
 router.get('/view/:postId', controller.view);
 
 router.get('/add-post', authMiddleware.requireAuth, controller.addPost);

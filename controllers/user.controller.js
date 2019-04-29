@@ -1,7 +1,8 @@
-const db = require('../db');
+const User = require('../models/user.model');
 
-module.exports.profile =  (req, res) => {
-    res.render('users/profile', {
-        users: db.get('users').value()
-    });
+module.exports.profile =  async (req, res) => {
+    var users = await User.find();
+        res.render('users/profile', {
+            users
+        });
 };

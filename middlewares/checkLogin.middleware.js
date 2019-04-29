@@ -1,4 +1,4 @@
-const db = require('../db');
+const User = require('../models/user.model');
 
 var isLogin = false;
 var checkLoginStatus = function(req, res){
@@ -8,11 +8,9 @@ var checkLoginStatus = function(req, res){
     }
 };
 
-module.exports.checkLogin = (req, res, next) => {
+module.exports.checkLogin = async (req, res, next) => {
     checkLoginStatus(req, res);
-    const user = db.get('users').find({ 
-        id: req.signedCookies.userId 
-    }).value();
+    var user = await User.find({_id: req.signedCookies.userId});
     loginStatus = isLogin;
     res.locals.user = user;
 

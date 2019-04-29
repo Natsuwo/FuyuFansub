@@ -9,7 +9,7 @@
             <select class="form-control" id="parent_post" name="postId" title="" >               
                 <option value="">[Select a category]</option>
                 <% for(let post of posts) {%>
-                <option value="<%= post.postId%>"><%= post.post_title%></option>
+                <option value="<%= post._id%>"><%= post.post_title%></option>
                 <% } %>
             </select>
         </div>

@@ -1,5 +1,5 @@
 <div class="container">
-    <table class="table table-bordered">
+    <table class="table table-bordered mt-5">
         <thead>
             <tr>
             <th style="width:80px;" class="text-center" scope="col">Category</th>
@@ -18,11 +18,11 @@
             <% for (let post of posts ) { %>
             <% episodes = post.episodes %>
                 <% for (let episode of episodes) {%>
-                <tr>
+                <tr class="_ongoing">
                     <th class="text-center" scope="row"><%= episode.category %></th>
-                    <td colspan="2"><a href="/view/<%= post.postId%>"><%= episode.fileName %></a></td>
+                    <td colspan="2"><a href="/view/<%= post._id%>"><%= episode.fileName %></a></td>
                     <td class="text-center" style="white-space: nowrap;">
-                        <a href="/download/<%= post.postId%>/<%= episode.epNum%>"><i class="fa fa-fw fa-download"></i></a>
+                        <a href="/download/<%= post._id%>/<%= episode.epNum%>"><i class="fa fa-fw fa-download"></i></a>
                     </td>
                     <td class="text-center"><%= episode.fileSize %></td>
                     <% date = moment(episode.date).format('YYYY-MM-DD HH:mm:ss') %>

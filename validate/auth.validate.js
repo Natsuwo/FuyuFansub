@@ -1,33 +1,33 @@
 const md5 = require('md5');
-const db = require('../db');
+const User = require('../models/user.model');
 
-module.exports.postLogin = (req, res, next) => {  
-    const errors = [];
-    const email = req.body.email.toLowerCase();
-    const password = req.body.password;
-    var user = db.get('users').find({ email: email }).value();
- 
-    if (!user) {
-      user = db.get('users').find({ username: email }).value();
+module.exports.postLogin = async (req, res, next) => {  
+    var errors = [];
+    var email = req.body.email.toLowerCase();
+    var password = req.body.password;
+    var users = await User.find();
+    var user = users.find(x => x.email === email);
+
+    if(!user) {
+      user = users.find(x => x.username === email);
       if(!user) {
         errors.push('User or Email desn\'t exist.');
       }
-    }  
+    }
 
-    const hashedPassword = md5(password);
+    var hashedPassword = md5(password);
+
     if (
-        typeof user !== "object" || (  
-        typeof password == "undefined" ||
-        hashedPassword !== user.password
-        )
-        ){
-     errors.push('Wrong password');
+      typeof user !== "object" || (  
+      typeof password == "undefined" ||
+      hashedPassword !== user.password
+      ) ){
+      errors.push('Wrong password');
     }
     
     if (errors.length) {
      res.render('auth/login', {
-         errors,
-         values: req.body
+         errors
      });
      return;
     }
@@ -35,6 +35,7 @@ module.exports.postLogin = (req, res, next) => {
     res.cookie('userId', user.id, {
         signed: true
     });
+
     next();
 
 }

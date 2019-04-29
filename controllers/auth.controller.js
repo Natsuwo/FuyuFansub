@@ -1,8 +1,7 @@
-const db = require('../db');
-
 module.exports.login = (req, res) => {
     const errors = [];
     res.render('auth/login', {
+        csrfToken: req.csrfToken(),
         errors
     });
 };

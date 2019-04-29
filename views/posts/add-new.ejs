@@ -7,8 +7,7 @@
     <div class="alert alert-danger"><%= error %></div>
      <% } %>
     <% } %>
-    <form method="POST", enctype="multipart/form-data">
-        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <form action="?_csrf=<%=csrfToken%>" method="POST" enctype="multipart/form-data">
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
@@ -39,8 +38,32 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                        <label class="control-label">Torrent flags</label>
-                </div>
+			<label class="control-label">Flags</label><br>
+			<div class="btn-group" data-toggle="buttons">
+				<label class="btn btn-secondary" title="Hidden Project">
+					<input id="is_hidden" name="is_hidden" type="checkbox" value="y">
+					<span class="glyphicon glyphicon-check"></span>
+					<span class="glyphicon glyphicon-unchecked"></span>
+					Hidden
+				</label>
+			</div>
+			<div class="btn-group" data-toggle="buttons">
+				<label class="btn btn-success active" title="Ongoing Project">
+					<input id="is_ongoing" name="is_ongoing" type="checkbox" value="y">
+					<span class="glyphicon glyphicon-ok"></span>
+					<span class="glyphicon glyphicon-unchecked"></span>
+					Ongoing
+				</label>
+            </div>
+            <div class="btn-group" data-toggle="buttons">
+				<label class="btn btn-warning" title="Completed Project">
+					<input id="is_completed" name="is_completed" type="checkbox" value="y">
+					<span class="glyphicon glyphicon-check"></span>
+					<span class="glyphicon glyphicon-unchecked"></span>
+					Completed
+				</label>
+			</div>
+		</div>
         </div>
         <div class="row">
             <div class="col-md-12">

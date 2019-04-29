@@ -1,36 +1,65 @@
-const db = require('../db');
+const Post = require('../models/post.model');
 const axios = require('axios');
 const moment = require('moment');
 
 
-module.exports.index = (req, res) => {
-    posts = db.get('posts').value();
+module.exports.index = async (req, res) => {
+    var posts = await Post.find();
+
     res.render('index', {
         posts,
         moment
     });
 };
 
-module.exports.view = (req, res) => {
-    var postId = req.params.postId;
-    var post = db.get('posts').find({ postId }).value();
+module.exports.project = (req, res) => {
+    var page = req.query.page || 1;
+    var perPage = 15;
 
+    var skip = (page * perPage) - perPage;
+    var limit = perPage; 
+
+    Post
+        .find({})
+        .skip(skip)
+        .limit(limit)
+        .exec(function(err, posts) {
+            Post.count().exec(function(err, count) {
+                if (err) return next(err)
+                res.render('posts/list-project', {
+                    posts,
+                    current: page,
+                    pages: Math.ceil(count / perPage)
+                })
+            })
+        });
+
+    // var posts = await Post.find().limit(perPage).skip(perPage * page);
+    // res.render('posts/list-project', {
+    //     posts,
+    //     moment
+    // });
+};
+
+module.exports.view = async (req, res) => {
+    var postId = req.params.postId;
+    var post = await Post.findById({_id: postId});
     res.render('posts/view', {
         post: post
     });
 };
 
-module.exports.addPost = (req, res) => {
+module.exports.addPost = async (req, res) => {
     var errors = [];
     res.render('posts/add-new', {
-        errors,
-        csrfToken: req.csrfToken()
+        csrfToken: req.csrfToken(),
+        errors
     });
 };
 
-module.exports.addEpisode = (req, res) => {
+module.exports.addEpisode = async (req, res) => {
     var errors = [];
-    var posts = db.get('posts').value();
+    var posts = await Post.find();
     res.render('episodes/add-new', {
         csrfToken: req.csrfToken(),
         errors,
@@ -38,7 +67,7 @@ module.exports.addEpisode = (req, res) => {
     });
 };
 
-module.exports.postAddEpisode = (req, res) => {
+module.exports.postAddEpisode = async (req, res) => {
     var date = Date.now();
     var postId = req.body.postId;
     var epNum = req.body.epNum;
@@ -76,7 +105,7 @@ module.exports.postAddEpisode = (req, res) => {
             'X-json-requested': 'true'
         }
     })
-    .then( (response) => {
+    .then( async (response) => {
         var str = response.data;
         var result = str.replace(')]}\'\n', '');
         result = JSON.parse(result);
@@ -84,33 +113,35 @@ module.exports.postAddEpisode = (req, res) => {
         var fileName = result.fileName;
         var fileSize = formatBytes(result.sizeBytes);
         var count = 0;
-        db.get('posts')
-        .find({ postId })
-        .get('episodes')
-        .push({epNum, fileName, fileSize, date, link_download, count}).write();
-
-        
+        // db.get('posts')
+        // .find({ postId })
+        // .get('episodes')
+        // .push({epNum, fileName, fileSize, date, link_download, count}).write();
+        await Post.findOneAndUpdate({_id: postId}, {$push: {episodes:[{epNum, fileName, fileSize, date, link_download, count}]}}, {new: true});
         res.redirect('/');
 
-
-    }).catch( (error) => {        
+    }).catch( (error) => {
+        console.log(error);    
     });
 };
 
-module.exports.postAddPost = (req, res) => {
+module.exports.postAddPost = async (req, res) => {
     req.body.thumbnail = req.file.path.split('\\').slice(1).join('/');
     req.body.episodes = [];
 
-    db.get('posts').push(req.body).write();
+   // db.get('posts').push(req.body).write();
+    await Post.create(req.body);
+    console.log(req.body);
     res.redirect('/');
 };
 
-module.exports.download = (req, res) => {
+module.exports.download = async (req, res) => {
     var postId = req.params.postId;
     var epNum = req.params.epNum;
 
-    var post = db.get('posts').find({ postId }).value();
-    var episodes = post.episodes;
+   // var post = db.get('posts').find({ postId }).value();
+    var post = await Post.find({ _id: postId });
+    var episodes = post[0].episodes;
     episode = episodes.find(obj => obj.epNum === epNum);
 
     function get_id(url) {
@@ -136,17 +167,21 @@ module.exports.download = (req, res) => {
             'X-json-requested': 'true'
         }
     })
-    .then( (response) => {
+    .then( async (response) => {
         var str = response.data;
         var result = str.replace(')]}\'\n', '');
         result = JSON.parse(result);
 
-        db.get('posts')
-        .find({ postId })
-        .get('episodes')
-        .find({ epNum })
-        .update('count', n => n + 1)
-        .write();
+        // db.get('posts')
+        // .find({ postId })
+        // .get('episodes')
+        // .find({ epNum })
+        // .update('count', n => n + 1)
+        // .write();
+        //var updateCount = await Post.episodes.find({_id: postId}).lean();
+        //findOneAndUpdate({_id: id, “subPosts.subNum”: subNum}, { $inc: {“subPosts.$.count”: 1} }, { new: true})
+        await Post.findOneAndUpdate({_id: postId, 'episodes.epNum': epNum}, { $inc: {'episodes.$.count': 1} }, { new: true});
+        
 
         res.render('posts/download', {
             post,
