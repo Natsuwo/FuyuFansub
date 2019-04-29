@@ -1,15 +1,38 @@
 const Post = require('../models/post.model');
+const Episode = require('../models/episode.model');
 const axios = require('axios');
 const moment = require('moment');
 
 
 module.exports.index = async (req, res) => {
-    var posts = await Post.find();
+    var page = req.query.page || 1;
+    var perPage = 30;
 
-    res.render('index', {
-        posts,
-        moment
-    });
+    var skip = (page * perPage) - perPage;
+    var limit = perPage;
+
+    Episode
+        .find({})
+        .skip(skip)
+        .limit(limit)
+        .exec(function(err, episodes) {
+            Episode.count().exec(function(err, count) {
+                if (err) return next(err)
+                res.render('index', {
+                    flash: {notice: req.flash('notice')},
+                    episodes,
+                    moment,
+                    current: page,
+                    pages: Math.ceil(count / perPage)
+                })
+            })
+        });
+
+    // res.render('index', {
+    //     posts,
+    //     episodes,
+    //     moment
+    // });
 };
 
 module.exports.project = (req, res) => {
@@ -44,34 +67,33 @@ module.exports.project = (req, res) => {
 module.exports.view = async (req, res) => {
     var postId = req.params.postId;
     var post = await Post.findById({_id: postId});
+    var episodes = await Episode.find({postId: postId});
     res.render('posts/view', {
-        post: post
+        post,
+        flash: {notice: req.flash('notice')},
+        episodes
     });
 };
 
 module.exports.addPost = async (req, res) => {
     var errors = [];
     res.render('posts/add-new', {
-        csrfToken: req.csrfToken(),
         errors
     });
 };
 
 module.exports.addEpisode = async (req, res) => {
-    var errors = [];
     var posts = await Post.find();
+    
     res.render('episodes/add-new', {
-        csrfToken: req.csrfToken(),
-        errors,
+        flash: {errors: req.flash('errors')},
         posts
     });
 };
 
 module.exports.postAddEpisode = async (req, res) => {
     var date = Date.now();
-    var postId = req.body.postId;
-    var epNum = req.body.epNum;
-    var link_download = req.body.link_download;
+    var {postId, epNum, link_download} = req.body;
 
     function get_id(url){
         var regExp = /(?:https?:\/\/)?(?:[\w\-]+\.)*(?:drive|docs)\.google\.com\/(?:(?:open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file)\/d\/|\/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})/i;
@@ -113,11 +135,14 @@ module.exports.postAddEpisode = async (req, res) => {
         var fileName = result.fileName;
         var fileSize = formatBytes(result.sizeBytes);
         var count = 0;
-        // db.get('posts')
-        // .find({ postId })
-        // .get('episodes')
-        // .push({epNum, fileName, fileSize, date, link_download, count}).write();
-        await Post.findOneAndUpdate({_id: postId}, {$push: {episodes:[{epNum, fileName, fileSize, date, link_download, count}]}}, {new: true});
+
+
+        req.body.fileName = fileName;
+        req.body.fileSize = fileSize;
+        req.body.count = count;
+        req.body.date = date;
+
+        await Episode.create(req.body);
         res.redirect('/');
 
     }).catch( (error) => {
@@ -127,7 +152,6 @@ module.exports.postAddEpisode = async (req, res) => {
 
 module.exports.postAddPost = async (req, res) => {
     req.body.thumbnail = req.file.path.split('\\').slice(1).join('/');
-    req.body.episodes = [];
 
    // db.get('posts').push(req.body).write();
     await Post.create(req.body);
@@ -136,13 +160,15 @@ module.exports.postAddPost = async (req, res) => {
 };
 
 module.exports.download = async (req, res) => {
-    var postId = req.params.postId;
-    var epNum = req.params.epNum;
+    // var postId = req.params.postId;
+    // var epNum = req.params.epNum;
+    var episodeId = req.params.episodeId;
 
    // var post = db.get('posts').find({ postId }).value();
-    var post = await Post.find({ _id: postId });
-    var episodes = post[0].episodes;
-    episode = episodes.find(obj => obj.epNum === epNum);
+    // var post = await Post.find({ _id: postId });
+    // var episodes = post[0].episodes;
+    // episode = episodes.find(obj => obj.epNum === epNum);
+    var episode = await Episode.findOne({_id: episodeId});
 
     function get_id(url) {
         var regExp = /(?:https?:\/\/)?(?:[\w\-]+\.)*(?:drive|docs)\.google\.com\/(?:(?:open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file)\/d\/|\/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})/i;
@@ -172,27 +198,77 @@ module.exports.download = async (req, res) => {
         var result = str.replace(')]}\'\n', '');
         result = JSON.parse(result);
 
-        // db.get('posts')
-        // .find({ postId })
-        // .get('episodes')
-        // .find({ epNum })
-        // .update('count', n => n + 1)
-        // .write();
-        //var updateCount = await Post.episodes.find({_id: postId}).lean();
-        //findOneAndUpdate({_id: id, “subPosts.subNum”: subNum}, { $inc: {“subPosts.$.count”: 1} }, { new: true})
-        await Post.findOneAndUpdate({_id: postId, 'episodes.epNum': epNum}, { $inc: {'episodes.$.count': 1} }, { new: true});
+        await Episode.findOneAndUpdate({_id: episodeId}, { $inc: {'count': 1} }, { new: true});
         
-
         res.render('posts/download', {
-            post,
-            epNum,
+            episode,
             result
         });      
     }).catch( (error) => {        
     });
 
 };
+// Edit Post
+module.exports.edit = async (req, res) => {
+   await Post.findById(req.params.postId, (err, post) => {
+        res.render('posts/edit-post', {
+            title: 'Edit Post',
+            post
+        });
+    });
+};
 
+module.exports.postEdit = async (req, res) => {
+    let post = {};
+    post.post_title = req.body.post_title;
+    post.tags = req.body.tags;
+    post.studios = req.body.studios;
+    post.description = req.body.description;
+
+    let query = {_id:req.params.postId};
+
+    await Post.updateOne(query, post, (err) => {
+        if(err) {
+            console.log(err);
+            return;
+        } else {
+            res.redirect('/');
+        }
+    });
+};
+// Delete Post
+module.exports.delete = async (req, res) => {
+    let query = {_id: req.params.postId};
+
+    await Post.remove(query, (err) => {
+        if(err) {
+            console.log(err);
+        }
+    });
+
+    await Episode.find({postId: req.params.postId}).remove({postId: req.params.postId}, (err) => {
+        if(err) {
+            console.log(err);
+        }
+    });
+
+    res.redirect('/');
+};
+// Delete Episode
+
+module.exports.deleteEpisode = async (req, res) => {
+    let query = {_id: req.params.epId};
+
+    await Episode.remove(query, (err) => {
+        if(err) {
+            console.log(err);
+        }
+    });
+
+    res.redirect('back');
+};
+
+// Logout
 module.exports.logout = (req, res) => {
     res.clearCookie('userId', { path: '/' });
     res.redirect('/');

@@ -1,4 +1,11 @@
 <div class="container">
+    <% if (flash && flash.notice && flash.notice.length > 0) { %>
+    <div class="alert alert-success"><%= flash.notice %>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <% } %>
     <table class="table table-bordered mt-5">
         <thead>
             <tr>
@@ -15,14 +22,12 @@
             </tr>
         </thead>
         <tbody>
-            <% for (let post of posts ) { %>
-            <% episodes = post.episodes %>
                 <% for (let episode of episodes) {%>
                 <tr class="_ongoing">
                     <th class="text-center" scope="row"><%= episode.category %></th>
-                    <td colspan="2"><a href="/view/<%= post._id%>"><%= episode.fileName %></a></td>
+                    <td colspan="2"><a href="/view/<%= episode.postId%>"><%= episode.fileName %></a></td>
                     <td class="text-center" style="white-space: nowrap;">
-                        <a href="/download/<%= post._id%>/<%= episode.epNum%>"><i class="fa fa-fw fa-download"></i></a>
+                        <a href="/download/<%= episode._id%>"><i class="fa fa-fw fa-download"></i></a>
                     </td>
                     <td class="text-center"><%= episode.fileSize %></td>
                     <% date = moment(episode.date).format('YYYY-MM-DD HH:mm:ss') %>
@@ -30,7 +35,36 @@
                     <td class="text-center"><%= episode.count %></td>
                 </tr>
                 <% } %>
-            <% } %>
         </tbody>
     </table>
+    <nav aria-label="Page navigation" class="mt-3">
+        <% if (pages > 0) { %>
+            <ul class="pagination justify-content-center">
+                <% if (current == 1) { %>
+                    <li class="page-item disabled"><a class="page-link">First</a></li>
+                <% } else { %>
+                    <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+                <% } %>
+                <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                <% if (i !== 1) { %>
+                    <li class="page-item disabled"><a class="page-link">...</a></li>
+                <% } %>
+                <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                    <% if (i == current) { %>
+                        <li class="page-item active"><a class="page-link"><%= i %></a></li>
+                    <% } else { %>
+                        <li class="page-item"><a class="page-link" href="?page=<%= i %>"><%= i %></a></li>
+                    <% } %>
+                    <% if (i == Number(current) + 4 && i < pages) { %>
+                        <li class="page-item disabled"><a class="page-link">...</a></li>
+                    <% } %>
+                <% } %>
+                <% if (current == pages) { %>
+                    <li class="page-item disabled"><a class="page-link">Last</a></li>
+                <% } else { %>
+                    <li class="page-item"><a class="page-link" href="?page=<%= pages %>">Last</a></li>
+                <% } %>
+            </ul>
+        <% } %>
+        </nav>
 </div>

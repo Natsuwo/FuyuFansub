@@ -1,33 +1,19 @@
 <%- include('../header'); -%>
 <%- include('../navbar'); -%>
 <div class="container">
-    <h1>Add New</h1>
-    <% if (errors) { %>
-     <% for(let error of errors ) { %>
-    <div class="alert alert-danger"><%= error %></div>
-     <% } %>
-    <% } %>
-    <form action="?_csrf=<%= csrf_token %>" method="POST" enctype="multipart/form-data">
-        
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label for="thumbnail">Thumbnail</label>
-                    <input name="thumbnail" type="file" id="thumbnail" class="form-control-file">
-                </div>
-            </div>
-        </div>
+    <h1><%= title%></h1>
+    <form action="?_csrf=<%=csrf_token%>" method="POST" >
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                 <label class="control-label" for="post_title">Post Name</label>
-                <input class="form-control" id="post_title" name="post_title" placeholder="Post name" title="" type="text" value="">
+                <input class="form-control" id="post_title" name="post_title" placeholder="Post name" title="" type="text" value="<%= post.post_title%>">
             </div>
                 </div>
             <div class="col-md-6">
                 <div class="form-group">
                 <label class="control-label" for="tags">Tags</label>
-                <input class="form-control" id="tags" name="tags" placeholder="Tags name" title="" type="text" value="">
+                <input class="form-control" id="tags" name="tags" placeholder="Tags name" title="" type="text" value="<%= post.tags%>">
                  </div>
             </div>
         </div>
@@ -35,7 +21,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                     <label class="control-label" for="studios">Studios</label>
-                    <input class="form-control" id="studios" name="studios" placeholder="Studios" title="" type="text" value="">
+                    <input class="form-control" id="studios" name="studios" placeholder="Studios" title="" type="text" value="<%= post.studios%>">
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -71,13 +57,37 @@
                 <div class="form-group">
                     <label class="control-label" for="description">Description</label>
                     <div role="tabpanel" class="tab-pane active" id="description-tab" data-markdown-target="#description-markdown-target">
-                        <textarea class="form-control markdown-source" id="description" name="description"></textarea>
+                        <textarea class="form-control markdown-source" id="description" name="description"><%= post.description%></textarea>
                     </div>
                 </div>
             </div>
         </div>        
-        <button class="btn btn-primary">Add New</button>
+        <button class="btn btn-primary">Edit</button>
     </form>
+
+    <div class="row mt-3">
+            <div class="col-md-5">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Danger Zone</h4>
+                        </div>
+                        <div class="panel-body">
+                            <form action="/delete/<%= post._id%>" method="POST">
+                                <input type="hidden" name="_csrf" value="<%= csrf_token %>">
+                                <input type="hidden" name="delete_post" value="Delete">
+                                <p class="lead">
+                                    Delete post.
+                                    <button type="submit" class="btn btn-danger pull-right" onclick="return deletePost()">Delete</button>
+                                </p>
+                                <p>
+                                    You will deleted all episode in this post<br>
+                                    Please make sure your decision.
+                                </p>         
+                                </form>
+                        </div>
+                    </div>
+                </div>
+    </div>
 </div>
 
 

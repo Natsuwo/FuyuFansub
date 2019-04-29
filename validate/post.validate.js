@@ -1,4 +1,4 @@
-const md5 = require('md5');
+const moment = require('moment');
 
 module.exports.addPost = (req, res, next) => {
     req.body.date = new Date();
@@ -9,6 +9,10 @@ module.exports.addPost = (req, res, next) => {
         errors.push('Post name is required');
     }
 
+    if (!req.body.thumbnail) {
+        errors.push('Thumbnail is required');
+    }
+
     if (errors.length) {
         res.render('posts/add-new', {
             errors: errors
@@ -16,5 +20,36 @@ module.exports.addPost = (req, res, next) => {
         return;
     }
 
+    next();
+};
+
+module.exports.addEpisode = async (req, res, next) => {
+    if(!req.body.postId) {
+        req.flash('errors', 'Parent post is required!')
+    }
+    if(!req.body.epNum) {
+        req.flash('errors', 'Please enter the number of episode')
+    }
+    if(!req.body.link_download) {
+        req.flash('errors', 'Link download is required!')
+    }
+
+    res.redirect('back');
+
+    next();
+};
+
+module.exports.delete = async (req, res, next) => {
+    if(req.body.delete_post) {
+        req.flash('notice', 'Deleted Success!')
+    }
+
+    next();
+};
+
+module.exports.deleteEpisode = async (req, res, next) => {
+    if(req.body.delete_episode) {
+        req.flash('notice', 'Deleted Success!')
+    }
     next();
 };

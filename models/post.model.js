@@ -9,19 +9,8 @@ var postSchema = new mongoose.Schema({
     thumbnail: String,
     is_ongoing: String,
     is_completed: String,
-    is_hidden: String,
-    episodes: [
-        {
-            epNum: String,
-            fileName: String,
-            fileSize: String,
-            date: Number,
-            link_download: String,
-            count: Number
-        }
-    ]
-
-
+    is_hidden: String
+    
 });
 
 var Post = mongoose.model('Post', postSchema, 'posts');

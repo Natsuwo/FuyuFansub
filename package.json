@@ -20,11 +20,13 @@
   "dependencies": {
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
+    "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.4",
     "csurf": "^1.10.0",
     "dotenv": "^7.0.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
+    "express-session": "^1.16.1",
     "lowdb": "^1.0.0",
     "md5": "^2.2.1",
     "moment": "^2.24.0",

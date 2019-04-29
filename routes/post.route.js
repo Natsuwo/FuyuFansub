@@ -20,26 +20,45 @@ const upload = multer({ storage: storage });
 
 router.get('/', controller.index);
 
-router.get('/list-project', controller.project);
+router.get('/add-post', authMiddleware.requireAuth, controller.addPost);
 
 router.get('/view/:postId', controller.view);
 
-router.get('/add-post', authMiddleware.requireAuth, controller.addPost);
+router.get('/edit/:postId', authMiddleware.requireAuth, controller.edit);
 
 router.get('/add-episode', authMiddleware.requireAuth, controller.addEpisode);
 
-router.get('/download/:postId/:epNum', controller.download);
+router.get('/download/:episodeId', controller.download);
+
+router.get('/list-project', controller.project);
 
 router.get('/logout', controller.logout);
 
-router.post('/add-post', 
+router.post('/add-post',
+    authMiddleware.requireAuth,
     upload.single('thumbnail'), 
     validate.addPost, 
     controller.postAddPost
 );
 
-router.post('/add-episode', 
+router.post('/edit/:postId',
+    authMiddleware.requireAuth,
+    controller.postEdit
+);
+
+router.post('/episode/:epId/delete',
+    authMiddleware.requireAuth,
+    validate.deleteEpisode,
+    controller.deleteEpisode
+);
+
+router.post('/add-episode',
+    authMiddleware.requireAuth,
+    validate.addEpisode,
     controller.postAddEpisode
 );
+
+
+router.post('/delete/:postId', authMiddleware.requireAuth, validate.delete, controller.delete);
 
 module.exports = router;
