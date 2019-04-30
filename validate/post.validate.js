@@ -1,5 +1,3 @@
-const moment = require('moment');
-
 module.exports.addPost = (req, res, next) => {
     req.body.date = new Date();
 
@@ -7,10 +5,6 @@ module.exports.addPost = (req, res, next) => {
 
     if (!req.body.post_title) {
         errors.push('Post name is required');
-    }
-
-    if (!req.body.thumbnail) {
-        errors.push('Thumbnail is required');
     }
 
     if (errors.length) {
@@ -25,18 +19,21 @@ module.exports.addPost = (req, res, next) => {
 
 module.exports.addEpisode = async (req, res, next) => {
     if(!req.body.postId) {
-        req.flash('errors', 'Parent post is required!')
+        req.flash('errors', 'Parent post is required!');
     }
     if(!req.body.epNum) {
-        req.flash('errors', 'Please enter the number of episode')
+        req.flash('errors', 'Please enter the number of episode');
     }
     if(!req.body.link_download) {
-        req.flash('errors', 'Link download is required!')
+        req.flash('errors', 'Link download is required!');
+    }
+    
+    if(req.body.link_download && req.body.epNum && req.body.postId) {
+        req.flash('notice', 'Upload Success!');
+        next();
     }
 
     res.redirect('back');
-
-    next();
 };
 
 module.exports.delete = async (req, res, next) => {

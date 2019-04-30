@@ -9,6 +9,7 @@ var episodeSchema = new mongoose.Schema({
     fileName: String,
     fileSize: String,
     date: Number,
+    flag: String,
     link_download: String,
     count: Number
 });

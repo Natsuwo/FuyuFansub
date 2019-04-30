@@ -1,39 +1,6 @@
 const Post = require('../models/post.model');
 const Episode = require('../models/episode.model');
 const axios = require('axios');
-const moment = require('moment');
-
-
-module.exports.index = async (req, res) => {
-    var page = req.query.page || 1;
-    var perPage = 30;
-
-    var skip = (page * perPage) - perPage;
-    var limit = perPage;
-
-    Episode
-        .find({})
-        .skip(skip)
-        .limit(limit)
-        .exec(function(err, episodes) {
-            Episode.count().exec(function(err, count) {
-                if (err) return next(err)
-                res.render('index', {
-                    flash: {notice: req.flash('notice')},
-                    episodes,
-                    moment,
-                    current: page,
-                    pages: Math.ceil(count / perPage)
-                })
-            })
-        });
-
-    // res.render('index', {
-    //     posts,
-    //     episodes,
-    //     moment
-    // });
-};
 
 module.exports.project = (req, res) => {
     var page = req.query.page || 1;
@@ -56,12 +23,6 @@ module.exports.project = (req, res) => {
                 })
             })
         });
-
-    // var posts = await Post.find().limit(perPage).skip(perPage * page);
-    // res.render('posts/list-project', {
-    //     posts,
-    //     moment
-    // });
 };
 
 module.exports.view = async (req, res) => {
@@ -76,22 +37,20 @@ module.exports.view = async (req, res) => {
 };
 
 module.exports.addPost = async (req, res) => {
-    var errors = [];
-    res.render('posts/add-new', {
-        errors
-    });
+    res.render('posts/add-new');
 };
 
 module.exports.addEpisode = async (req, res) => {
     var posts = await Post.find();
     
     res.render('episodes/add-new', {
-        flash: {errors: req.flash('errors')},
+        flash: {errors: req.flash('errors'), notice: req.flash('notice')},
         posts
     });
 };
 
 module.exports.postAddEpisode = async (req, res) => {
+    var post = await Post.findOne({_id: req.body.postId});
     var date = Date.now();
     var {postId, epNum, link_download} = req.body;
 
@@ -141,6 +100,7 @@ module.exports.postAddEpisode = async (req, res) => {
         req.body.fileSize = fileSize;
         req.body.count = count;
         req.body.date = date;
+        req.body.flag = post._status;
 
         await Episode.create(req.body);
         res.redirect('/');
@@ -153,9 +113,7 @@ module.exports.postAddEpisode = async (req, res) => {
 module.exports.postAddPost = async (req, res) => {
     req.body.thumbnail = req.file.path.split('\\').slice(1).join('/');
 
-   // db.get('posts').push(req.body).write();
     await Post.create(req.body);
-    console.log(req.body);
     res.redirect('/');
 };
 
@@ -224,8 +182,11 @@ module.exports.postEdit = async (req, res) => {
     post.tags = req.body.tags;
     post.studios = req.body.studios;
     post.description = req.body.description;
+    post._status = req.body._status
 
     let query = {_id:req.params.postId};
+
+    await Episode.find({postId: req.params.postId}).updateMany({}, {"$set":{"flag": post._status}});
 
     await Post.updateOne(query, post, (err) => {
         if(err) {

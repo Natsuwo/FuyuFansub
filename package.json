@@ -32,7 +32,8 @@
     "moment": "^2.24.0",
     "mongodb": "^3.2.3",
     "mongoose": "^5.5.3",
-    "multer": "^1.4.1"
+    "multer": "^1.4.1",
+    "request": "^2.88.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.11"

@@ -1,21 +1,30 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-fuyu mb-2">
     <div class="container">
         <a href="/" class="logo pr-2"><img src="/img/logo.png" alt="logo"></a>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav">
+        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div class="navbar-nav mr-auto">
             <a class="nav-item nav-link" href="/list-project">List Project</a>
             <a class="nav-item nav-link active" href="#">About Us</a>
           </div>
-        </div>
-        <form class="form-inline">
-                <input type="text" class="form-control search-bar" name="q" placeholder="Search..." value="">
+        
+        <form action="/" class="form-inline my-2 my-lg-0 justify-content-end">
+              <select id="_status" class="form-control br-0 _status" name="f">
+                  <option value="0" title="No filter" selected="">No Filter</option>
+                  <option value="1" title="Ongoing">Ongoing</option>
+                  <option value="2" title="Completed">Completed</option>
+                  <option value="3" title="Droped">Droped</option>
+                </select>       
+                <input type="text" class="form-control search-bar br-0 bl-0" name="q" placeholder="Search..." value="">
                 <div class="input-group-btn search-btn">
-                        <button class="btn btn-primary" type="submit">
+                        <button class="btn btn-primary bl-0" type="submit">
                             <i class="fa fa-search fa-fw"></i>
                         </button>
                 </div>
         </form>
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right pl-1">
             <li class="nav-item dropdown">
                     <% if (loginStatus) { %>
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -38,5 +47,6 @@
                     <% } %>
             </li>
         </ul>
+        </div>
     </div>
       </nav>

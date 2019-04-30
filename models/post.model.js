@@ -7,10 +7,7 @@ var postSchema = new mongoose.Schema({
     description: String,
     date: Number,
     thumbnail: String,
-    is_ongoing: String,
-    is_completed: String,
-    is_hidden: String
-    
+    _status: String  
 });
 
 var Post = mongoose.model('Post', postSchema, 'posts');

@@ -6,35 +6,47 @@
         </button>
     </div>
     <% } %>
+    <% if (flash && flash.primary && flash.primary.length > 0) { %>
+    <div class="alert alert-primary"><%= flash.primary %>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <% } %>
+    <% if(Object.keys(episodes).length > 0) {%>
     <table class="table table-bordered mt-5">
         <thead>
             <tr>
-            <th style="width:80px;" class="text-center" scope="col">Category</th>
+            <th style="width:80px;" class="text-center" scope="col">Status</th>
             <th scope="col">Name</th>
             <th class="fuyu-comments" title="Comments" style="width:50px;">
                     <a href="#"></a>
                     <i class="fas fa-comments"></i>
             </th>
             <th class="text-center" scope="col">Link</th>
-            <th class="text-center" scope="col">Size</th>
-            <th class="text-center" scope="col">Date</th>
+            <th class="text-center visible-sm visible-xs" scope="col">Size</th>
+            <th class="text-center visible-xs" scope="col">Date</th>
             <th class="text-center" scope="col"><i class="fa fa-check" aria-hidden="true"></i></th>
             </tr>
         </thead>
-        <tbody>
-                <% for (let episode of episodes) {%>
-                <tr class="_ongoing">
-                    <th class="text-center" scope="row"><%= episode.category %></th>
+        <tbody>     
+                <% episodes.forEach(function(episode){ %>
+                    <% var status, flag; %>
+                    <% if(episode.flag === '1') {flag = '_ongoing', status = 'Ongoing'} %>
+                    <% if(episode.flag === '2') {flag = '_completed', status = 'Completed'} %>
+                    <% if(episode.flag === '3') {flag = '_droped', status = 'Droped'} %>
+                <tr class="<%= flag%>">
+                    <th class="text-center" scope="row"><div class="<%= status.toLowerCase(); %>"><%= status%></div></th>
                     <td colspan="2"><a href="/view/<%= episode.postId%>"><%= episode.fileName %></a></td>
                     <td class="text-center" style="white-space: nowrap;">
                         <a href="/download/<%= episode._id%>"><i class="fa fa-fw fa-download"></i></a>
                     </td>
-                    <td class="text-center"><%= episode.fileSize %></td>
+                    <td class="text-center visible-sm visible-xs"><%= episode.fileSize %></td>
                     <% date = moment(episode.date).format('YYYY-MM-DD HH:mm:ss') %>
-                    <td class="text-center"><%= date %></td>
+                    <td class="text-center visible-xs"><%= date %></td>
                     <td class="text-center"><%= episode.count %></td>
                 </tr>
-                <% } %>
+                <% });%>
         </tbody>
     </table>
     <nav aria-label="Page navigation" class="mt-3">
@@ -67,4 +79,8 @@
             </ul>
         <% } %>
         </nav>
+        <% } else { %>
+            <h3>No results found</h3>
+            <% }%>
+    
 </div>

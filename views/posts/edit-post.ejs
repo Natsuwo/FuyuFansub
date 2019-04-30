@@ -18,39 +18,29 @@
             </div>
         </div>
         <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                    <label class="control-label" for="studios">Studios</label>
-                    <input class="form-control" id="studios" name="studios" placeholder="Studios" title="" type="text" value="<%= post.studios%>">
-                    </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                <label class="control-label" for="studios">Studios</label>
+                <input class="form-control" id="studios" name="studios" placeholder="Studios" title="" type="text" value="<%= post.studios%>">
                 </div>
-                <div class="col-md-6">
-			<label class="control-label">Flags</label><br>
-			<div class="btn-group" data-toggle="buttons">
-				<label class="btn btn-secondary" title="Hidden Project">
-					<input id="is_hidden" name="is_hidden" type="checkbox" value="y">
-					<span class="glyphicon glyphicon-check"></span>
-					<span class="glyphicon glyphicon-unchecked"></span>
-					Hidden
-				</label>
-			</div>
-			<div class="btn-group" data-toggle="buttons">
-				<label class="btn btn-success active" title="Ongoing Project">
-					<input id="is_ongoing" name="is_ongoing" type="checkbox" value="y">
-					<span class="glyphicon glyphicon-ok"></span>
-					<span class="glyphicon glyphicon-unchecked"></span>
-					Ongoing
-				</label>
             </div>
-            <div class="btn-group" data-toggle="buttons">
-				<label class="btn btn-warning" title="Completed Project">
-					<input id="is_completed" name="is_completed" type="checkbox" value="y">
-					<span class="glyphicon glyphicon-check"></span>
-					<span class="glyphicon glyphicon-unchecked"></span>
-					Completed
-				</label>
-			</div>
-		</div>
+            <div class="col-md-6">
+            <label class="control-label">Flags</label>
+            <select id="_status" class="form-control br-0 _status" name="_status">
+                <% var ongoing, completed, droped; 
+                if(post._status === '1'){
+                    ongoing = 'selected';
+                } if(post._status === '2') {
+                    completed = 'selected' ;
+                } if (post._status === '3') {
+                    droped = 'selected';
+                }
+                %>
+                <option <%= ongoing%> value="1" title="Ongoing">Ongoing</option>
+                <option <%= completed%> value="2" title="Completed">Completed</option>
+                <option <%= droped%> value="3" title="Droped">Droped</option>
+            </select>
+            </div>
         </div>
         <div class="row">
             <div class="col-md-12">
