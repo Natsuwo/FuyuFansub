@@ -21,6 +21,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
+    "cloudinary": "^1.14.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.4",
     "csurf": "^1.10.0",

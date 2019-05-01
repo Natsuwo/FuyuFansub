@@ -1,6 +1,7 @@
 const Post = require('../models/post.model');
 const Episode = require('../models/episode.model');
 const axios = require('axios');
+const cloudinary = require('cloudinary');
 
 module.exports.project = (req, res) => {
     var page = req.query.page || 1;
@@ -102,10 +103,16 @@ module.exports.postAddEpisode = async (req, res) => {
 };
 
 module.exports.postAddPost = async (req, res) => {
-    req.body.thumbnail = req.file.path.split('\\').slice(1).join('/');
+    //req.body.thumbnail = req.file.path.split('\\').slice(1).join('/');
+    cloudinary.uploader.upload(req.file.path, async (result) => {
+        req.body.thumbnail = result.secure_url;
 
-    await Post.create(req.body);
-    res.redirect('/');
+        await Post.create(req.body);
+        res.redirect('/');
+    });
+    
+
+   
 };
 
 module.exports.download = async (req, res) => {

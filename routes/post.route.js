@@ -5,18 +5,27 @@ const controller = require('../controllers/post.controller');
 const validate = require('../validate/post.validate');
 const md5 = require('md5');
 const authMiddleware = require('../middlewares/auth.middleware');
+const cloudinary = require('cloudinary');
 
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, './public/upload/');
-    },
-
     filename: function (req, file, cb) {
       cb(null, file.fieldname + '-' + md5(file.originalname) + file.originalname);
     }
   });
+const imageFilter = (req, file, cb) => {
+  if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+      return cb(new Error('Only image files are allowed!'), false);
+  }
+  cb(null, true);
+};
   
-const upload = multer({ storage: storage });
+const upload = multer({ storage, fileFilter: imageFilter });
+
+cloudinary.config({
+  cloud_name: 'dtmygdk4v',
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 router.get('/add-post', authMiddleware.requireAuth, controller.addPost);
 
