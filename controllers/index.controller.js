@@ -124,3 +124,9 @@ module.exports.index = async (req, res) => {
         });
     }
 };
+
+module.exports.about = (req, res) => {
+    res.render('about-us', {
+        title: 'About Us'
+    });
+};

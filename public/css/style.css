@@ -309,12 +309,32 @@ table.torrent-list thead th a {
         td.visible-xs {
         display: none !important;
         }
+        
+        table.torrent-list thead th.sorting:after,
+        table.torrent-list thead th.sorting_asc:after,
+        table.torrent-list thead th.sorting_desc:after {
+            position: absolute;
+            top: 12px;
+            right: 1px;
+            display: block;
+            font-family: 'Font Awesome\ 5 Free';
+        }
   }
   
   @media (min-width: 768px) and (max-width: 991px) {
         th.visible-sm,
         td.visible-sm {
             display: none !important;
+        }
+
+        table.torrent-list thead th.sorting:after,
+        table.torrent-list thead th.sorting_asc:after,
+        table.torrent-list thead th.sorting_desc:after {
+            position: absolute;
+            top: 12px;
+            right: 1px;
+            display: block;
+            font-family: 'Font Awesome\ 5 Free';
         }
   }
   
