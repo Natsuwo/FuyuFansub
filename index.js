@@ -23,7 +23,7 @@ const sessionMiddleware = require('./middlewares/session.middleware');
 const authMiddleware = require('./middlewares/auth.middleware');
 
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 
 // const Posts = require('./models/user.model');
