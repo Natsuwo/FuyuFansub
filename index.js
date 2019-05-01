@@ -78,7 +78,7 @@ app.use('/api/posts', authMiddleware.requireAuth, apiPostRoute);
 
 app.use((err, req, res, next) => {
     if (err) {
-      return res.sendStatus(403);
+      return res.status(403).send(err.message);
     }
     next();
   });
