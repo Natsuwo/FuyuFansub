@@ -1,5 +1,14 @@
 <%- include('../header'); -%>
 <%- include('../navbar'); -%>
+<% function formatBytes(bytes,decimals) {
+   if(bytes == 0) return '0 Bytes';
+   var k = 1024,
+       dm = decimals <= 0 ? 0 : decimals || 2,
+       sizes = ['Bytes', 'KiB', 'MiB', 'GiB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+       i = Math.floor(Math.log(bytes) / Math.log(k));
+   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
+%>
 <div class="container">
     <% if (flash && flash.notice && flash.notice.length > 0) { %>
     <div class="alert alert-success"><%= flash.notice %>
@@ -50,7 +59,7 @@
             <% for(let episode of episodes ) { %>
             <tr>
             <th scope="row"><%= episode.epNum%></th>
-            <td><%= episode.fileName%> <b>(<%= episode.fileSize%>)</b></td>
+            <td><%= episode.fileName%> <b>(<%= formatBytes(episode.fileSize)%>)</b></td>
             <td><a href="/download/<%= episode._id%>"><i class="fa fa-fw fa-download"></i></a></td>
             <% if (loginStatus) { %>
             <form action="/episode/<%= episode._id%>/delete" method="POST">

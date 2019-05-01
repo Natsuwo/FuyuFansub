@@ -1,3 +1,5 @@
+const request = require('request');
+
 module.exports.addPost = (req, res, next) => {
     req.body.date = new Date();
 
@@ -49,4 +51,39 @@ module.exports.deleteEpisode = async (req, res, next) => {
         req.flash('notice', 'Deleted Success!')
     }
     next();
+};
+
+module.exports.download = async (req, res, next) => {
+    var captcha = req.body['g-recaptcha-response'];
+    
+    if(!captcha) {
+        req.flash('errors', 'Please select captcha.');
+        res.render('posts/download', {
+            flash: {errors: req.flash('errors')}
+        });
+        return;
+      }
+    
+      // Secret Key
+      const secretKey = '6LcLSBETAAAAAHKKptZbdAENAwUfW0W2lHerNKNk';
+    
+      // Verify URL
+      const verifyUrl = `https://google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captcha}&remoteip=${req.connection.remoteAddress}`;
+      
+      // Make Request To VerifyURL
+      request(verifyUrl, (err, response, body) => {
+        body = JSON.parse(body);
+    
+        // If Not Successful
+        if(body.success == false){
+          req.flash('errors', 'Failed captcha verification.');
+          res.render('posts/download', {
+            flash: {errors: req.flash('errors')}
+          });
+          return;
+        }
+  
+        next();
+  
+      });
 };

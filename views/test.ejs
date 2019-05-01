@@ -15,6 +15,7 @@
   <div class="container">
     <h1>Subscribe</h1>
     <form id="subscribeForm">
+        <input type="hidden" name="_csrf" value="<%= csrf_token %>">
 		
       <div class="form-group">
         <label for="name">Name</label>
@@ -43,17 +44,18 @@
         method:'POST',
         headers: {
           'Accept': 'application/json, text/plain, */*',
+          'X-XSRF-TOKEN': $('input[name="_csrf"]').attr('value'),
           'Content-type':'application/json'
         },
         body:JSON.stringify({name:name, email: email, captcha: captcha})
       })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
-        alert(data.msg);
+
       });
     }
   </script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 </body>
 
 </html>

@@ -11,6 +11,7 @@ module.exports.project = (req, res) => {
 
     Post
         .find({})
+        .sort({post_title: 1})
         .skip(skip)
         .limit(limit)
         .exec(function(err, posts) {
@@ -59,15 +60,6 @@ module.exports.postAddEpisode = async (req, res) => {
         var match = url.match(regExp);
         return match[1];
     }
-
-    function formatBytes(bytes,decimals) {
-        if(bytes == 0) return '0 Bytes';
-        var k = 1024,
-            dm = decimals <= 0 ? 0 : decimals || 2,
-            sizes = ['Bytes', 'KiB', 'MiB', 'GiB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
-            i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-    }
     
     const drive_url = 'https://drive.google.com/uc?id='+ get_id(link_download) +'&confirm=jYel&authuser=0&export=download';
     axios.post(drive_url, this.data, {
@@ -92,7 +84,7 @@ module.exports.postAddEpisode = async (req, res) => {
         result = JSON.parse(result);
 
         var fileName = result.fileName;
-        var fileSize = formatBytes(result.sizeBytes);
+        var fileSize = result.sizeBytes;
         var count = 0;
 
 
@@ -118,14 +110,7 @@ module.exports.postAddPost = async (req, res) => {
 };
 
 module.exports.download = async (req, res) => {
-    // var postId = req.params.postId;
-    // var epNum = req.params.epNum;
     var episodeId = req.params.episodeId;
-
-   // var post = db.get('posts').find({ postId }).value();
-    // var post = await Post.find({ _id: postId });
-    // var episodes = post[0].episodes;
-    // episode = episodes.find(obj => obj.epNum === epNum);
     var episode = await Episode.findOne({_id: episodeId});
 
     function get_id(url) {
@@ -155,13 +140,9 @@ module.exports.download = async (req, res) => {
         var str = response.data;
         var result = str.replace(')]}\'\n', '');
         result = JSON.parse(result);
-
-        await Episode.findOneAndUpdate({_id: episodeId}, { $inc: {'count': 1} }, { new: true});
         
-        res.render('posts/download', {
-            episode,
-            result
-        });      
+        await Episode.findOneAndUpdate({_id: episodeId}, { $inc: {'count': 1} }, { new: true});
+        res.redirect(result.downloadUrl);
     }).catch( (error) => {        
     });
 

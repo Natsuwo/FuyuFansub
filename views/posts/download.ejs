@@ -4,10 +4,20 @@
     <div class="card mb-4 mt-4 p-4">
         <div class="text-center">
             <h1>Download</h1>
+            <% if(flash && flash.errors && flash.errors.length > 0) { %>
+                <% flash.errors.forEach(function(error){ %>
+                <div class="alert alert-danger"><%= error %></div>
+                <% })%>
+                <% } %>
             <p>Click the button on below to download</p>
             
-            
-            <a id="link_download" href="<%= result.downloadUrl%>"><button class="btn btn-primary btn-lg">Download</button></a>         
+            <form id="downloadForm" method="POST">
+                <input type="hidden" name="_csrf" value="<%= csrf_token %>">
+            <div class="form-group">
+                <div class="g-recaptcha" data-sitekey="6LcLSBETAAAAAM8RqKELyKVPerViffFAQ1QTl40U"></div>
+            </div>   
+            <input type="submit" value="Verify" class="btn btn-primary">
+            </form>     
         </div>
     </div>
 </div>

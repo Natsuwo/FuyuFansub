@@ -26,7 +26,7 @@ router.get('/edit/:postId', authMiddleware.requireAuth, controller.edit);
 
 router.get('/add-episode', authMiddleware.requireAuth, controller.addEpisode);
 
-router.get('/download/:episodeId', controller.download);
+router.get('/download/:episodeId', validate.download, controller.download);
 
 router.get('/list-project', controller.project);
 
@@ -56,6 +56,7 @@ router.post('/add-episode',
     controller.postAddEpisode
 );
 
+router.post('/download/:episodeId', validate.download, controller.download);
 
 router.post('/delete/:postId', authMiddleware.requireAuth, validate.delete, controller.delete);
 

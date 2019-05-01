@@ -4,8 +4,13 @@
     <h1 class="mt-4 mb-2">Login</h1>
     <% errors.forEach(function(error){ %>
     <div class="alert alert-danger"><%= error %></div>
-     <% })%>
-    <form method="POST">
+		 <% })%>
+		 <% if(flash && flash.errors && flash.errors.length > 0) { %>
+			<% flash.errors.forEach(function(error){ %>
+			<div class="alert alert-danger"><%= error %></div>
+			<% })%>
+			<% } %>
+    <form id="loginForm" method="POST">
 		<input type="hidden" name="_csrf" value="<%= csrf_token %>">
 		<div class="row">
 			<div class="form-group col-md-4">
@@ -32,6 +37,7 @@
 			</div>
 		</div>
 	</form>
+
 </div>
 
 

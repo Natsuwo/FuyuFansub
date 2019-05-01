@@ -187,6 +187,10 @@ textarea.form-control {
     border-radius: 5px 5px 5px 5px;
 }
 
+.form-control {
+    background-clip: unset !important;
+}
+
 .completed {
     color: #000;
     background-color: #ff8888;
@@ -201,6 +205,51 @@ textarea.form-control {
     width: auto;
     height: 23px;
     border-radius: 5px 5px 5px 5px;
+}
+
+.g-recaptcha {
+    display: inline-block;
+}
+
+table.torrent-list thead th.sorting:after,
+table.torrent-list thead th.sorting_asc:after,
+table.torrent-list thead th.sorting_desc:after {
+	position: absolute;
+	top: 12px;
+	right: 8px;
+	display: block;
+	font-family: 'Font Awesome\ 5 Free';
+}
+
+table.torrent-list thead th.sorting:after {
+	content: "\f0dc";
+	color: #808080;
+}
+
+table.torrent-list thead th.sorting_asc:after {
+	content: "\f0de";
+}
+
+table.torrent-list thead th.sorting_desc:after {
+	content: "\f0dd";
+}
+
+table.torrent-list thead th {
+	position: relative;
+	background-image: none !important;
+}
+
+table.torrent-list thead th a {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    text-decoration: none;
+    z-index: 10;
+    background-color: white;
+    opacity: 0;
+    filter: alpha(opacity=1);
 }
 
 /* Panel */
