@@ -76,6 +76,13 @@ app.use('/', authRoute);
 app.use('/api/posts', authMiddleware.requireAuth, apiPostRoute);
 // End App Config
 
+app.use((err, req, res, next) => {
+    if (err) {
+      return res.sendStatus(403);
+    }
+    next();
+  });
+  
 app.listen(port, () => {
     console.log('Server is running on port ' + port);
 });
