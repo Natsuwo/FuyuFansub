@@ -43,7 +43,7 @@ module.exports.postLogin = async (req, res, next) => {
      }
   
     // Secret Key
-    const secretKey = '6LcLSBETAAAAAHKKptZbdAENAwUfW0W2lHerNKNk';
+    const secretKey = process.env.CATPCHA_SECRET;
   
     // Verify URL
     const verifyUrl = `https://google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captcha}&remoteip=${req.connection.remoteAddress}`;
