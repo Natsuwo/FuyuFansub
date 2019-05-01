@@ -95,7 +95,6 @@ module.exports.postAddEpisode = async (req, res) => {
         req.body.flag = post._status;
 
         await Episode.create(req.body);
-        res.redirect('/');
 
     }).catch( (error) => {
         console.log(error);    

@@ -9,15 +9,23 @@
             <a class="nav-item nav-link" href="/list-project">List Project</a>
             <a class="nav-item nav-link active" href="#">About Us</a>
           </div>
-        
         <form action="/" class="form-inline my-2 my-lg-0 justify-content-end">
+          <% var ongoing, completed, droped; 
+                if(query.f === '1'){
+                    ongoing = 'selected';
+                } if(query.f === '2') {
+                    completed = 'selected' ;
+                } if (query.f === '3') {
+                    droped = 'selected';
+                }
+                %>
               <select id="_status" class="form-control br-0 _status" name="f">
                   <option value="0" title="No filter" selected="">No Filter</option>
-                  <option value="1" title="Ongoing">Ongoing</option>
-                  <option value="2" title="Completed">Completed</option>
-                  <option value="3" title="Droped">Droped</option>
+                  <option value="1" title="Ongoing" <%= ongoing%>>Ongoing</option>
+                  <option value="2" title="Completed" <%= completed%>>Completed</option>
+                  <option value="3" title="Droped" <%= droped%>>Droped</option>
                 </select>       
-                <input type="text" class="form-control search-bar br-0 bl-0" name="q" placeholder="Search..." value="">
+                <input type="text" class="form-control search-bar br-0 bl-0" name="q" placeholder="Search..." value="<%= query.q%>">
                 <div class="input-group-btn search-btn">
                         <button class="btn btn-primary bl-0" type="submit">
                             <i class="fa fa-search fa-fw"></i>

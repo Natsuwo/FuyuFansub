@@ -13,6 +13,7 @@ module.exports.checkLogin = async (req, res, next) => {
     var user = await User.find({_id: req.signedCookies.userId});
     loginStatus = isLogin;
     res.locals.user = user;
+    res.locals.query = req.query;
 
     next();
 };

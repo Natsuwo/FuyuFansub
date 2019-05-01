@@ -33,9 +33,11 @@ module.exports.addEpisode = async (req, res, next) => {
     if(req.body.link_download && req.body.epNum && req.body.postId) {
         req.flash('notice', 'Upload Success!');
         next();
+        
     }
-
     res.redirect('back');
+    
+
 };
 
 module.exports.delete = async (req, res, next) => {
