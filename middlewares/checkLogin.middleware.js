@@ -10,11 +10,28 @@ var checkLoginStatus = function(req, res){
 
 module.exports.checkLogin = async (req, res, next) => {
     checkLoginStatus(req, res);
-    var user = await User.find({_id: req.signedCookies.userId});
+    var user = await User.findOne({_id: req.signedCookies.userId});
     loginStatus = isLogin;
-    res.locals.user = user;
+    res.locals.userName = user;
     res.locals.query = req.query;
     res.locals.action = '/';
 
+    next();
+};
+
+module.exports.updateMode = async (req, res, next) => {
+    mode = req.signedCookies.style_mode ? req.signedCookies.style_mode : 'light-mode';
+
+    if(loginStatus) {
+        var user = await User.findOne({_id: req.signedCookies.userId});
+        mode = user.style_mode;
+    }
+
+    if(!mode) {
+        mode = 'light-mode';
+    }
+
+    classes = mode;
+    
     next();
 };

@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const flash = require('connect-flash');
 const session = require('express-session');
 const Commit = require('./models/commit.model');
-const request = require('request');
+const expressLayouts = require('express-ejs-layouts');
 
 mongoose.connect(process.env.MONGO_URL);
 
@@ -38,6 +38,7 @@ app.set('views', './views');
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(expressLayouts);
 app.use(cookieParser(process.env.SESSION_SECRET));
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -48,6 +49,7 @@ app.use(session({
 }));
 app.use(sessionMiddleware);
 app.use(checkLoginMiddleware.checkLogin);
+app.use(checkLoginMiddleware.updateMode);
 
 app.use(csrf());
 
@@ -59,8 +61,8 @@ app.use(function(req, res, next) {
 
 app.use(flash());
 app.use( async (req, res, next) => {
-    res.locals.success = req.flash('success');
-    res.locals.errors = req.flash('error');
+    res.locals.flash = [];
+    res.locals.errors = [];
 
     var commit = await Commit.findOne();
     res.locals.commit = commit.commit;

@@ -7,6 +7,11 @@
     margin-top: 20px;
 }
 
+body {
+    min-height: 75rem;
+    padding-top: 4.5rem;
+  }
+
 /* Navbar */
 .logo img {
     width: 200px;
@@ -17,13 +22,13 @@
     box-shadow: 0 -4px 10px #ab2328;
 }
 
-.nav-link {
+.fuyu-link {
     color: #dda7a9!important;
     font-weight: 700!important;
     font-size: 1.1rem;
 }
 
-.navbar-nav .nav-link:hover {
+.navbar-nav .fuyu-link:hover {
     color: #fff!important;
     transition: all .15s ease-in-out;
 }
@@ -32,7 +37,7 @@
     color: #fff!important;
 }
 
-.navbar-nav .active{
+.navbar-nav .active {
     border-bottom: .25rem solid #fff;
     text-decoration: none;
 }
@@ -53,6 +58,7 @@
     left: auto;
     right: 0;
 }
+
 
 /* Container */
 .content-left {
@@ -101,6 +107,11 @@ textarea.form-control {
     border-color: #ccc;
 }
 
+.navbar-nav .dropdown-menu .active {
+    border-bottom: none;
+    text-decoration: none;
+}
+
 /*Post View*/
 
 .br-0 {
@@ -132,17 +143,31 @@ textarea.form-control {
     line-height: 17px;
 }
 
-.box-thumbnail .studios {
-    color: #fff;
-}
-
 .overlay {
-    height: 25%;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.6);
     position: absolute;
     bottom: 0;
     padding: 12px;
+}
+
+.box-thumbnail .overlay a {
+    color: #fff;
+    text-decoration: none;
+    line-height: 17px;
+}
+
+.box-thumbnail .overlay a:hover {
+    color: #43bbe490;
+    text-decoration: none;
+    transition: all .15s;
+    -webkit-transition: all .15s;
+}
+
+.box-thumbnail .overlay .studios {
+    font-size: .8rem;
+    margin-top: 3px;
+    color: #00bafad9;
 }
 
 .box-description {
@@ -153,6 +178,14 @@ textarea.form-control {
 
 .box-description:hover {
     overflow-y: scroll;
+}
+
+.table > tbody > tr > td {
+    vertical-align: middle;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 603px;
 }
 
 .table > tbody > tr._ongoing > td {
@@ -303,6 +336,11 @@ table.torrent-list thead th a {
 }
 
 /*Screen for mobile*/
+@media (max-width: 1199.98px) { 
+    .table > tbody > tr > td {
+        white-space: normal;
+    }
+ }
   
   @media (max-width: 767px) {
         th.visible-xs,
@@ -318,6 +356,24 @@ table.torrent-list thead th a {
             right: 1px;
             display: block;
             font-family: 'Font Awesome\ 5 Free';
+        }
+
+        .navbar-collapse > form > #_status {
+            width: 100% !important;
+            margin-bottom: .5rem;
+        }
+
+        .table > tbody > tr > td {
+            white-space: normal;
+        }
+
+        .fixed-top {
+            position: relative;
+        }
+
+        body {
+            min-height: 0rem;
+            padding-top: 0rem;
         }
   }
   
@@ -336,6 +392,24 @@ table.torrent-list thead th a {
             display: block;
             font-family: 'Font Awesome\ 5 Free';
         }
+
+        .navbar-collapse > form > #_status {
+            width: 100% !important;
+            margin-bottom: .5rem;
+        }
+
+        .table > tbody > tr > td {
+            white-space: normal;
+        }
+
+        .fixed-top {
+            position: relative;
+        }
+
+        body {
+            min-height: 0rem;
+            padding-top: 0rem;
+        }
   }
   
   @media (min-width: 768px) and (max-width: 991.98px) { 
@@ -352,9 +426,18 @@ table.torrent-list thead th a {
             width: 100% !important;
         }
 
+        .navbar-collapse > form > #_status {
+            width: 100% !important;
+            margin-bottom: .5rem;
+        }
+
         .br-0 {
             border-bottom-left-radius: .25rem;
             border-top-left-radius: .25rem;
+        }
+
+        .table > tbody > tr > td {
+            white-space: normal;
         }
    }
 
@@ -376,6 +459,9 @@ table.torrent-list thead th a {
             border-bottom-left-radius: .25rem;
             border-top-left-radius: .25rem;
         }
+        .table > tbody > tr > td {
+            white-space: normal;
+        }
     }
 
     @media (max-width: 575.98px) { 
@@ -395,5 +481,9 @@ table.torrent-list thead th a {
         .br-0 {
             border-bottom-left-radius: .25rem;
             border-top-left-radius: .25rem;
+        }
+
+        .table > tbody > tr > td {
+            white-space: normal;
         }
      }

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-fuyu mb-2">
+<nav class="navbar navbar-expand-lg navbar-light bg-fuyu fixed-top mb-2">
     <div class="container">
         <a href="/" class="logo pr-2"><img src="/img/logo.png" alt="logo"></a>
         <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -6,8 +6,8 @@
           </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <div class="navbar-nav mr-auto">
-            <a class="nav-item nav-link" href="/list-project">List Project</a>
-            <a class="nav-item nav-link" href="/about-us">About Us</a>
+            <a class="nav-item nav-link fuyu-link" href="/list-project">List Project</a>
+            <a class="nav-item nav-link fuyu-link" href="/about-us">About Us</a>
           </div>
           <% if(action){action = action}%>
         <form action="<%= action%>" class="form-inline my-2 my-lg-0 justify-content-end">
@@ -36,8 +36,8 @@
         <ul class="nav navbar-nav navbar-right pl-1">
             <li class="nav-item dropdown">
                     <% if (loginStatus) { %>
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <%= user[0].name%>
+                    <a class="nav-link fuyu-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <%= userName.name%>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="/add-post">Add Post</a>
@@ -47,7 +47,7 @@
                         <a class="dropdown-item" href="/logout">Logout</a>
                     </div>
                     <% } else{ %>
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link fuyu-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Guest
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">

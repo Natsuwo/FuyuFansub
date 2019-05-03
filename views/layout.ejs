@@ -1,0 +1,22 @@
+<%- include('header'); -%>
+<%- include('navbar'); -%>
+<div class="container">
+    <% if (flash && flash.notice && flash.notice.length > 0) { %>
+    <div class="alert alert-success"><%= flash.notice %>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <% } %>
+    <% if (flash && flash.primary && flash.primary.length > 0) { %>
+        <%for(let primary of flash.primary){%>
+    <div class="alert alert-primary"><%= primary %>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+        <% } %>
+    <% } %>
+<%- body %>
+</div>
+<%- include('footer'); -%>

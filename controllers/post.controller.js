@@ -16,7 +16,7 @@ module.exports.project = (req, res) => {
 
     if(Object.keys(req.query).length > 0) {
     var q = req.query.q;
-
+    if(!req.query.q){q = ''}
     const regex = new RegExp(escapeRegex(q), 'gi');
     var search = {post_title: regex};
 

@@ -1,4 +1,5 @@
 const Episode = require('../models/episode.model');
+const User = require('../models/user.model');
 const moment = require('moment');
 
 module.exports.index = async (req, res) => {
@@ -84,14 +85,14 @@ module.exports.index = async (req, res) => {
                 else {
                     if(episodes.length < 1) {
                         req.flash('primary', 'Not found!');
-                    }if(episodes.length > 1 && q) {
+                    }if(episodes.length > 0 && q) {
                         req.flash('primary', 'Result for ' + q);
-                    }if(episodes.length > 1 && parseInt(f) > 0){
+                    }if(episodes.length > 0 && parseInt(f) > 0){
                         req.flash('primary', 'Result' + resultF);
                     }
 
                     res.render("index", {
-                        flash: {notice: req.flash('notice'), primary: req.flash('primary')},
+                        flash: {notice: req.flash('notice'), primary: req.flash('primary'), errors: req.flash('errors')},
                         episodes,
                         sizeSort,
                         req,
@@ -114,7 +115,7 @@ module.exports.index = async (req, res) => {
             Episode.count().exec(function(err, count) {
                 if (err) return next(err)
                 res.render('index', {
-                    flash: {notice: req.flash('notice')},
+                    flash: {notice: req.flash('notice'), primary: req.flash('primary'), errors: req.flash('errors')},
                     episodes,
                     dateSort,
                     req,
@@ -133,4 +134,22 @@ module.exports.about = (req, res) => {
     res.render('about-us', {
         title: 'About Us'
     });
+};
+
+module.exports.updateMode = async (req, res, next) => {
+    mode = req.body.mode ? req.body.mode : 'light-mode';
+    
+    if(loginStatus) {
+       await User.findOneAndUpdate({_id: req.signedCookies.userId}, {"$set":{"style_mode": mode}});
+    }
+
+    res.cookie('style_mode', mode, {
+        signed: true
+    });
+
+    res.json({
+       mode
+    })
+
+    next();
 };
