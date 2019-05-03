@@ -437,7 +437,8 @@ table.torrent-list thead th a {
         }
 
         .table > tbody > tr > td {
-            white-space: normal;
+            white-space: unset;
+            word-break: break-all;
         }
    }
 
@@ -460,7 +461,8 @@ table.torrent-list thead th a {
             border-top-left-radius: .25rem;
         }
         .table > tbody > tr > td {
-            white-space: normal;
+            white-space: unset;
+            word-break: break-all;
         }
     }
 
@@ -484,6 +486,7 @@ table.torrent-list thead th a {
         }
 
         .table > tbody > tr > td {
-            white-space: normal;
+            white-space: unset;
+            word-break: break-all;
         }
      }
