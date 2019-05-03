@@ -15,7 +15,7 @@ module.exports.postLogin = async (req, res) => {
 };
 
 module.exports.commit = async (req, res) => {
-    var commitApi = await axios.get('https://api.github.com/repos/Natsuwo/FuyuFansub/git/refs/heads/');
-    await Commit.create({'commit': commitApi.data[0].object['sha'].slice(0, 8)});
+    var commitApi = await axios.get(process.env.COMMIT);
+    await Commit.updateOne({'commit': commitApi.data[0].object['sha'].slice(0, 8)});
     res.redirect('/');
 };

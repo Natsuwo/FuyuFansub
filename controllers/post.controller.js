@@ -121,7 +121,7 @@ module.exports.addMultiEp = async (req, res) => {
         return match[1];
     }
 
-    const drive_url = 'https://www.googleapis.com/drive/v2/files?q=%27'+ get_id(req.body.link_download) +'%27%20in%20parents&maxResults=9999&orderBy=title_natural&key=AIzaSyDtV2YN9J2TYCIvO688nsToWj7LtJvqLyo&fields=items(title,id,mimeType,fileSize)';
+    const drive_url = 'https://www.googleapis.com/drive/v2/files?q=%27'+ get_id(req.body.link_download) +`%27%20in%20parents&maxResults=9999&orderBy=title_natural&key=${process.env.GOOGLE_API_KEY}&fields=items(title,id,mimeType,fileSize)`;
     var folderList = await axios.get(drive_url);
     var results = folderList.data.items;
     let lists = {};
@@ -207,8 +207,6 @@ module.exports.edit = async (req, res) => {
 };
 
 module.exports.postEdit = async (req, res) => {
-    cloudinary.uploader.upload(req.body.thumbnail, async (result) => {
-        req.body.thumbnail = result.secure_url;
         let post = {};
         post.thumbnail = req.body.thumbnail;
         post.post_title = req.body.post_title;
@@ -228,8 +226,7 @@ module.exports.postEdit = async (req, res) => {
             } else {
                 res.redirect('/view/' + req.params.postId);
             }
-        });    
-    });
+        });
 };
 // Delete Post
 module.exports.delete = async (req, res) => {
