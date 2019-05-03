@@ -35,6 +35,8 @@ router.get('/edit/:postId', authMiddleware.requireAuth, controller.edit);
 
 router.get('/add-episode', authMiddleware.requireAuth, controller.addEpisode);
 
+router.get('/add-multi', authMiddleware.requireAuth, controller.addMultiEp);
+
 router.get('/download/:episodeId', validate.download, controller.download);
 
 router.get('/list-project', controller.project);
@@ -63,6 +65,12 @@ router.post('/add-episode',
     authMiddleware.requireAuth,
     validate.addEpisode,
     controller.postAddEpisode
+);
+
+router.post('/add-multi',
+    authMiddleware.requireAuth,
+    validate.addMultiEpisode,
+    controller.postAddMultiEp
 );
 
 router.post('/download/:episodeId', validate.download, controller.download);

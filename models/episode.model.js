@@ -7,7 +7,7 @@ var episodeSchema = new mongoose.Schema({
     postId: ObjectId,
     epNum: String,
     fileName: String,
-    fileSize: String,
+    fileSize: Number,
     date: Number,
     flag: String,
     link_download: String,

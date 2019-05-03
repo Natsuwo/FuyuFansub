@@ -10,5 +10,11 @@
             <div class="col-sm-2"><strong>Email:</strong></div>
             <div class="col-sm-10"><%= user[0].email%></div>
         </div>
+        <div class="row">
+            <div class="col-sm-2"><strong>Update Commit:</strong></div>
+            <form action="/commit/?_csrf=<%= csrf_token %>" method="POST" enctype="multipart/form-data">
+                <button type="submit" class="btn btn-link text delete-button">Submit</button>
+            </form>
+        </div>
    </div>
 <%- include('../footer'); -%>

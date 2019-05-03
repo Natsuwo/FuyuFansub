@@ -36,8 +36,22 @@ module.exports.addEpisode = async (req, res, next) => {
         
     }
     res.redirect('back');
-    
+};
 
+module.exports.addMultiEpisode = async (req, res, next) => {
+    if(!req.body.postId) {
+        req.flash('errors', 'Parent post is required!');
+    }
+    if(!req.body.link_download) {
+        req.flash('errors', 'Link download is required!');
+    }
+    
+    if(req.body.link_download && req.body.postId) {
+        req.flash('notice', 'Upload Success!');
+        next();
+        
+    }
+    res.redirect('back');
 };
 
 module.exports.delete = async (req, res, next) => {

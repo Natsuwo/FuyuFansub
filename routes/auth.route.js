@@ -10,4 +10,6 @@ router.get('/login', controller.login);
 
 router.post('/login', validate.postLogin, controller.postLogin);
 
+router.post('/commit', controller.commit);
+
 module.exports = router;

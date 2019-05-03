@@ -7,7 +7,8 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const flash = require('connect-flash');
 const session = require('express-session');
-const axios = require('axios');
+const Commit = require('./models/commit.model');
+const request = require('request');
 
 mongoose.connect(process.env.MONGO_URL);
 
@@ -56,14 +57,14 @@ app.use(function(req, res, next) {
 });
 
 
-
 app.use(flash());
 app.use( async (req, res, next) => {
     res.locals.success = req.flash('success');
     res.locals.errors = req.flash('error');
 
-    var commitApi = await axios.get('https://api.github.com/repos/Natsuwo/FuyuFansub/git/refs/heads/');
-    res.locals.commit = commitApi.data[0].object['sha'].slice(0, 8);
+    var commit = await Commit.findOne();
+    res.locals.commit = commit.commit;
+
     next();
 });
 

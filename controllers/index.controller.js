@@ -1,4 +1,3 @@
-const Post = require('../models/post.model');
 const Episode = require('../models/episode.model');
 const moment = require('moment');
 
@@ -14,9 +13,11 @@ module.exports.index = async (req, res) => {
     var limit = perPage;
 
     var sort = {date: -1};
-    dateSort = {'dateUrl': `/?s=date&o=asc`, 'class': 'sorting'};
+    dateSort = {'dateUrl': '/?s=date&o=asc', 'class': 'sorting'};
     sizeSort = {'sizeUrl': '/?s=size&o=desc', 'class': 'sorting'};
     countSort = {'countUrl': '/?s=count&o=desc', 'class': 'sorting'};
+    res.clearCookie("select-episode");
+    res.clearCookie("epNum");
 
     if(Object.keys(req.query).length > 0) {
         var q = req.query.q,
@@ -73,11 +74,12 @@ module.exports.index = async (req, res) => {
 
 
         // Get all campgrounds from DB
-        Episode.find(search).skip(skip)
+        Episode.find(search)
+        .skip(skip)
         .limit(limit)
         .sort(sort)
         .exec(function(err, episodes) {
-            Episode.count().exec(function(err, count) {
+            Episode.count(search).exec(function(err, count) {
                 if (err) return next(err)
                 else {
                     if(episodes.length < 1) {
@@ -92,6 +94,7 @@ module.exports.index = async (req, res) => {
                         flash: {notice: req.flash('notice'), primary: req.flash('primary')},
                         episodes,
                         sizeSort,
+                        req,
                         dateSort,
                         countSort,
                         moment,
@@ -114,6 +117,7 @@ module.exports.index = async (req, res) => {
                     flash: {notice: req.flash('notice')},
                     episodes,
                     dateSort,
+                    req,
                     sizeSort,
                     countSort,
                     moment,

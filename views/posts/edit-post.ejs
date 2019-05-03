@@ -2,7 +2,15 @@
 <%- include('../navbar'); -%>
 <div class="container">
     <h1><%= title%></h1>
-    <form action="?_csrf=<%=csrf_token%>" method="POST" >
+    <form action="?_csrf=<%= csrf_token %>" method="POST">
+         <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="thumbnail">Thumbnail</label>
+                    <input class="form-control" id="thumbnail" name="thumbnail" placeholder="Thumbnail" title="" accept="image/*" type="text" value="<%= post.thumbnail%>">
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
