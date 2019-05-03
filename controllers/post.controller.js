@@ -4,13 +4,40 @@ const axios = require('axios');
 const cloudinary = require('cloudinary');
 
 module.exports.project = (req, res) => {
+    function escapeRegex(text) {
+        return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+    };
+
     var page = req.query.page || 1;
     var perPage = 15;
 
     var skip = (page * perPage) - perPage;
-    var limit = perPage; 
+    var limit = perPage;
+
+    if(Object.keys(req.query).length > 0) {
+    var q = req.query.q;
+
+    const regex = new RegExp(escapeRegex(q), 'gi');
+    var search = {post_title: regex};
 
     Post
+        .find(search)
+        .sort({post_title: 1})
+        .skip(skip)
+        .limit(limit)
+        .exec(function(err, posts) {
+            Post.count(search).exec(function(err, count) {
+                if (err) return next(err)
+                res.render('posts/list-project', {
+                    posts,
+                    action: '/list-project',
+                    current: page,
+                    pages: Math.ceil(count / perPage)
+                })
+            })
+        });
+    } else{ 
+        Post
         .find({})
         .sort({post_title: 1})
         .skip(skip)
@@ -20,11 +47,13 @@ module.exports.project = (req, res) => {
                 if (err) return next(err)
                 res.render('posts/list-project', {
                     posts,
+                    action: '/list-project',
                     current: page,
                     pages: Math.ceil(count / perPage)
                 })
             })
         });
+    }
 };
 
 module.exports.view = async (req, res) => {

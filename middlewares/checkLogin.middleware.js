@@ -14,6 +14,7 @@ module.exports.checkLogin = async (req, res, next) => {
     loginStatus = isLogin;
     res.locals.user = user;
     res.locals.query = req.query;
+    res.locals.action = '/';
 
     next();
 };

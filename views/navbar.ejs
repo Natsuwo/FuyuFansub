@@ -9,7 +9,8 @@
             <a class="nav-item nav-link" href="/list-project">List Project</a>
             <a class="nav-item nav-link" href="/about-us">About Us</a>
           </div>
-        <form action="/" class="form-inline my-2 my-lg-0 justify-content-end">
+          <% if(action){action = action}%>
+        <form action="<%= action%>" class="form-inline my-2 my-lg-0 justify-content-end">
           <% var ongoing, completed, droped; 
                 if(query.f === '1'){
                     ongoing = 'selected';

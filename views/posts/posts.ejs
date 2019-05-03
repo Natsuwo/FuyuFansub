@@ -61,9 +61,6 @@
         </tbody>
     </table>
     <% const params = new URLSearchParams(req.url.slice(1)) %>
-    <% console.log(params.toString())%>
-    <% params.delete('page') %>
-    <% console.log(params.toString());%>
     <nav aria-label="Page navigation" class="mt-3">
         <% if (pages > 0) { %>
             <ul class="pagination justify-content-center">
