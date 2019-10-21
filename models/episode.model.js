@@ -14,6 +14,5 @@ var episodeSchema = new mongoose.Schema({
     count: Number
 });
 
-var Episode = mongoose.model('Episode', episodeSchema, 'episodes');
-
-module.exports = Episode;
+episodeSchema.index({ fileName: 'text' });
+module.exports = mongoose.model('Episode', episodeSchema);
