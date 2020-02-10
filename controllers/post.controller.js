@@ -202,7 +202,7 @@ module.exports.download = async (req, res) => {
             result = JSON.parse(result);
 
             await Episode.findOneAndUpdate({ _id: episodeId }, { $inc: { 'count': 1 } }, { new: true });
-            res.redirect("https://loptelink.pro/st?api=f07d734039e961018a335683d377c226e92daa3b&url=" + episode.link_download);
+            res.redirect(episode.link_download);
         }).catch((error) => {
         });
 
