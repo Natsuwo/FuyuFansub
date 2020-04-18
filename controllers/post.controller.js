@@ -102,12 +102,12 @@ module.exports.postAddEpisode = async (req, res) => {
             }
         }
         var request = await axios(options)
-        var { originalFilename, fileSize } = request.data
+        var { originalFilename, size } = request.data
         var fileName = originalFilename;
         var fileSize = fileSize;
         var count = 0;
         req.body.fileName = fileName;
-        req.body.fileSize = fileSize;
+        req.body.fileSize = size;
         req.body.count = count;
         req.body.date = date;
         req.body.flag = post._status;
