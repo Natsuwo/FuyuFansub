@@ -2,7 +2,7 @@ const Post = require('../models/post.model');
 const Episode = require('../models/episode.model');
 const axios = require('axios');
 const cloudinary = require('cloudinary');
-const { encrypt } = require('../helpers')
+const { encrypt, getAccessToken } = require('../helpers')
 
 module.exports.project = (req, res) => {
     function escapeRegex(text) {
@@ -82,36 +82,43 @@ module.exports.addEpisode = async (req, res) => {
 };
 
 module.exports.postAddEpisode = async (req, res) => {
-    var post = await Post.findOne({ _id: req.body.postId });
-    var date = Date.now();
-    var { postId, epNum, link_download } = req.body;
+    try {
+        var { postId, epNum, link_download } = req.body;
+        var post = await Post.findOne({ _id: postId });
+        var date = Date.now();
 
-    function get_id(url) {
-        var regExp = /(?:https?:\/\/)?(?:[\w\-]+\.)*(?:drive|docs)\.google\.com\/(?:(?:open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file)\/d\/|\/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})/i;
-        var match = url.match(regExp);
-        return match[1];
-    }
-    var drive_id = get_id(link_download)
-    const drive_url = 'https://www.googleapis.com/drive/v2/files/' + drive_id + '?key=' + process.env.GOOGLE_API_KEY + '&supportsTeamDrives=true'
-    axios.get(drive_url)
-        .then(async (response) => {
-            var result = response.data
-            var fileName = result.originalFilename;
-            var fileSize = result.fileSize;
-            var count = 0;
-
-
-            req.body.fileName = fileName;
-            req.body.fileSize = fileSize;
-            req.body.count = count;
-            req.body.date = date;
-            req.body.flag = post._status;
-
-            await Episode.create(req.body);
-
-        }).catch((error) => {
-            console.log(error);
+        function get_id(url) {
+            var regExp = /(?:https?:\/\/)?(?:[\w\-]+\.)*(?:drive|docs)\.google\.com\/(?:(?:open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file)\/d\/|\/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})/i;
+            var match = url.match(regExp);
+            return match[1];
+        }
+        var drive_id = get_id(link_download)
+        var access_token = await getAccessToken()
+        options = {
+            url: 'https://www.googleapis.com/drive/v3/files/' + drive_id + '?alt=json&supportsTeamDrives=true&fields=*',
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + access_token
+            }
+        }
+        var request = await axios(options)
+        var { originalFilename, fileSize } = request.data
+        var fileName = originalFilename;
+        var fileSize = fileSize;
+        var count = 0;
+        req.body.fileName = fileName;
+        req.body.fileSize = fileSize;
+        req.body.count = count;
+        req.body.date = date;
+        req.body.flag = post._status;
+        await Episode.create(req.body);
+    } catch (err) {
+        console.log(err.message)
+        req.flash('errors', err.message)
+        res.render('episodes/add-new', {
+            flash: { errors: req.flash('errors'), notice: req.flash('notice') }
         });
+    }
 };
 // Add Multi Ep
 module.exports.addMultiEp = async (req, res) => {
