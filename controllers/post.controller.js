@@ -2,6 +2,7 @@ const Post = require('../models/post.model');
 const Episode = require('../models/episode.model');
 const axios = require('axios');
 const cloudinary = require('cloudinary');
+const { encrypt } = require('../helpers')
 
 module.exports.project = (req, res) => {
     function escapeRegex(text) {
@@ -170,41 +171,22 @@ module.exports.postAddPost = async (req, res) => {
 };
 
 module.exports.download = async (req, res) => {
-    var episodeId = req.params.episodeId;
-    var episode = await Episode.findOne({ _id: episodeId });
+    try {
+        var episodeId = req.params.episodeId;
+        var episode = await Episode.findOne({ _id: episodeId });
 
-    function get_id(url) {
-        var regExp = /(?:https?:\/\/)?(?:[\w\-]+\.)*(?:drive|docs)\.google\.com\/(?:(?:open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file)\/d\/|\/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})/i;
-        var match = url.match(regExp);
-        return match[1];
-    }
-
-    var drive_url = 'https://drive.google.com/uc?id=' + get_id(episode.link_download) + '&confirm=jYel&authuser=0&export=download';
-    axios.post(drive_url, this.data, {
-        headers: {
-            'Accept': '*/*',
-            'Accept-encoding': 'gzip, deflate, br',
-            'Accept-language': 'en-GB,en-US;q=0.9,en;q=0.8',
-            'Content-length': '0',
-            'Content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
-            'Origin': 'https://drive.google.com',
-            'Referer': 'https://drive.google.com/drive/my-drive',
-            'User-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36',
-            'X-chrome-connected': 'id=102224796319835333482,mode=0,enable_account_consistency=false',
-            'X-client-data': 'CIa2yQEIpbbJAQipncoBCKijygEYkqPKAQ==',
-            'X-drive-first-party': 'DriveWebUi',
-            'X-json-requested': 'true'
+        function get_id(url) {
+            var regExp = /(?:https?:\/\/)?(?:[\w\-]+\.)*(?:drive|docs)\.google\.com\/(?:(?:open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file)\/d\/|\/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})/i;
+            var match = url.match(regExp);
+            return match[1];
         }
-    })
-        .then(async (response) => {
-            var str = response.data;
-            var result = str.replace(')]}\'\n', '');
-            result = JSON.parse(result);
-
-            await Episode.findOneAndUpdate({ _id: episodeId }, { $inc: { 'count': 1 } }, { new: true });
-            res.redirect(episode.link_download);
-        }).catch((error) => {
-        });
+        var drive_id = get_id(episode.link_download)
+        var url = process.env.PROXY + "/download/" + encrypt(drive_id)
+        await Episode.findOneAndUpdate({ _id: episodeId }, { $inc: { 'count': 1 } }, { new: true });
+        res.redirect(url);
+    } catch (err) {
+        res.send(err.message)
+    }
 
 };
 // Edit Post

@@ -24,6 +24,7 @@
     "cloudinary": "^1.14.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.4",
+    "crypto": "^1.0.1",
     "csurf": "^1.10.0",
     "dotenv": "^7.0.0",
     "ejs": "^2.6.1",
