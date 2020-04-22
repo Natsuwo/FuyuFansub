@@ -14,9 +14,5 @@
         href="https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/drive&response_type=code&access_type=offline&redirect_uri=https://fuyufs.com/help-us&client_id=58442714088-2tbkceifnd85hd66t6dipt4uipdq7kho.apps.googleusercontent.com">Cấp
         chứng chỉ</a>
     <h1>Danh sách đóng góp</h1>
-    <ul>
-        <% token.forEach(function(item){ %>
-        <li><%= item.refresh_token.substring(10, 5)%></li>
-        <% });%>
-    </ul>
+    <h1><%= token.length%></h1>
 </div>
