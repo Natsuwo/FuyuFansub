@@ -41,11 +41,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressLayouts);
 app.use(cookieParser(process.env.SESSION_SECRET));
 app.use(session({
-    secret: process.env.SESSION_SECRET,
-    name: '_session',
-    proxy: true,
-    resave: true,
-    saveUninitialized: true
+  secret: process.env.SESSION_SECRET,
+  name: '_session',
+  proxy: true,
+  resave: true,
+  saveUninitialized: true
 }));
 app.use(sessionMiddleware);
 app.use(checkLoginMiddleware.checkLogin);
@@ -53,21 +53,21 @@ app.use(checkLoginMiddleware.updateMode);
 
 app.use(csrf());
 
-app.use(function(req, res, next) {
-	res.locals.csrf_token = req.csrfToken();
-	next();
+app.use(function (req, res, next) {
+  res.locals.csrf_token = req.csrfToken();
+  next();
 });
 
 
 app.use(flash());
-app.use( async (req, res, next) => {
-    res.locals.flash = [];
-    res.locals.errors = [];
+app.use(async (req, res, next) => {
+  res.locals.flash = [];
+  res.locals.errors = [];
 
-    var commit = await Commit.findOne();
-    res.locals.commit = commit.commit;
+  var commit = await Commit.findOne();
+  res.locals.commit = commit.commit;
 
-    next();
+  next();
 });
 
 app.use('/', indexRoute);
@@ -80,12 +80,12 @@ app.use('/api/posts', authMiddleware.requireAuth, apiPostRoute);
 // End App Config
 
 app.use((err, req, res, next) => {
-    if (err) {
-      return res.status(403).send(err.message);
-    }
-    next();
-  });
-  
+  if (err) {
+    return res.status(403).send(err.message);
+  }
+  next();
+});
+
 app.listen(port, () => {
-    console.log('Server is running on port ' + port);
+  console.log('Server is running on port ' + port);
 });

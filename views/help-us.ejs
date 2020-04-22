@@ -1,0 +1,22 @@
+<div class="container">
+    <div class="alert alert-secondary" role="alert">
+        Hiện tại google đã siết chặt hơn chính sách của họ, bọn mình buộc phải tắt công khai toàn bộ file trên web.
+        Và bọn mình sẽ gửi tới các bạn các file dưới dạng private. Tuy nhiên cách này sẽ bị limit nếu số lượt tải vượt
+        quá cho phép.
+        Để download không bị limit hãy giúp tụi mình đóng góp account google. Các bạn có thể gửi những tài khoản đã
+        không dùng nữa hoặc đang sử dụng.
+        Bọn mình sẽ lấy chứng chỉ của tài khoản bạn để tạo ra link download private. Và cam đoan sẽ không dùng chứng chỉ
+        với những mục đích khác.
+        Để đóng góp tài khoản vui lòng theo đường dẫn bên dưới làm theo hướng dẫn. Hoặc xem video:
+    </div>
+
+    <a class="btn btn-primary btn-lg btn-block active" role="button" aria-pressed="true"
+        href="https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/drive&response_type=code&access_type=offline&redirect_uri=http://localhost:3000/help-us&client_id=58442714088-2tbkceifnd85hd66t6dipt4uipdq7kho.apps.googleusercontent.com">Cấp
+        chứng chỉ</a>
+    <h1>Danh sách đóng góp</h1>
+    <ul>
+        <% token.forEach(function(item){ %>
+        <li><%= item.refresh_token.substring(10, 5)%></li>
+        <% });%>
+    </ul>
+</div>

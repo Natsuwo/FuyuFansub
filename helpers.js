@@ -4,8 +4,7 @@ const IV_LENGTH = 16;
 const axios = require('axios')
 var key = process.env.CRYPTOKEY
 key = key.substring(0, 32)
-var access_token;
-var expiry_date;
+const Token = require('./models/token.model')
 module.exports = {
     encrypt(text) {
         try {
@@ -31,24 +30,31 @@ module.exports = {
             return false;
         }
     },
-    async getAccessToken() {
+    async getAccessToken(token) {
+        if (!token) {
+            var count = await Token.countDocuments()
+            var random = Math.floor(Math.random() * count)
+            token = await Token.findOne().skip(random)
+        }
+        var { access_token, expiry_date } = token
         var timeNow = (new Date).getTime()
         if (expiry_date && expiry_date > timeNow) {
             return access_token
         } else
-            return await module.exports.refreshToken()
+            return await module.exports.refreshToken(token)
     },
-    async refreshToken() {
-        console.log('co chay')
+    async refreshToken(token) {
         var client_id = process.env.CLIENT_ID
         var client_secret = process.env.CLIENT_SECRET
-        var refresh_token = process.env.REFRESH_TOKEN
+        var { refresh_token } = token
         var grant_type = 'refresh_token'
         var form = { client_id, client_secret, refresh_token, grant_type }
         var response = await axios.post('https://accounts.google.com/o/oauth2/token', form)
         var time = new Date()
         expiry_date = time.setSeconds(time.getSeconds() + response.data.expires_in)
         access_token = response.data.access_token
-        return await module.exports.getAccessToken()
+        token.expiry_date = expiry_date
+        await Token.updateOne({ refresh_token }, { access_token, expiry_date })
+        return await module.exports.getAccessToken(token)
     }
 }

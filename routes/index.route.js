@@ -10,4 +10,15 @@ router.get('/about-us', controller.about);
 
 router.post('/mode', controller.updateMode, styleMode.updateMode);
 
+router.get('/help-us', controller.helpUs)
+router.get('/access_token', async (req, res) => {
+    try {
+        var { getAccessToken } = require('../helpers')
+        var access_token = await getAccessToken()
+        res.send(access_token)
+    } catch (err) {
+        res.send(err.message)
+    }
+})
+
 module.exports = router;
