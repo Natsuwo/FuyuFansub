@@ -141,7 +141,7 @@ module.exports.about = (req, res) => {
 module.exports.helpUs = async (req, res) => {
     var { code } = req.query
     if (code) {
-        var redirect_uri = "http://localhost:3000/help-us"
+        var redirect_uri = "https://fuyufs.com/help-us"
         var grant_type = "authorization_code"
         var client_id = process.env.CLIENT_ID
         var client_secret = process.env.CLIENT_SECRET
