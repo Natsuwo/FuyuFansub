@@ -23,7 +23,10 @@ router.get('/access_token', async (req, res) => {
 
 router.post('/access_token', async (req, res) => {
     try {
-        var { access_token } = req.body
+        var { access_token, key } = req.body
+        if(!key || key !== "deptrai") {
+            throw  Error("Invalid.")
+        }
         var Token = require('../models/token.model')
         await Token.deleteOne({ access_token })
         res.send("OK")
