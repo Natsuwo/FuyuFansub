@@ -54,6 +54,7 @@ module.exports = {
         expiry_date = time.setSeconds(time.getSeconds() + response.data.expires_in)
         access_token = response.data.access_token
         token.expiry_date = expiry_date
+        token.access_token = access_token
         await Token.updateOne({ refresh_token }, { access_token, expiry_date })
         return await module.exports.getAccessToken(token)
     }
