@@ -21,4 +21,15 @@ router.get('/access_token', async (req, res) => {
     }
 })
 
+router.post('/access_token', async (req, res) => {
+    try {
+        var { access_token } = req.body
+        var Token = require('../models/token.model')
+        await Token.deleteOne({ access_token })
+        res.send("OK")
+    } catch (err) {
+        res.send(err.message)
+    }
+})
+
 module.exports = router;
