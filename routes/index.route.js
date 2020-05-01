@@ -3,7 +3,8 @@ const router = express.Router();
 const controller = require('../controllers/index.controller');
 const middleware = require('../middlewares/index.middleware');
 const styleMode = require('../middlewares/checkLogin.middleware');
-const cache = require('apicache')
+const apicache = require('apicache')
+let cache = apicache.middleware
 
 router.get('/', middleware.index, controller.index);
 
