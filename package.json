@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Natsuwo/FuyuFansub#readme",
   "dependencies": {
+    "apicache": "^1.5.3",
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "cloudinary": "^1.14.0",
